@@ -1,0 +1,54 @@
+{
+  "name": "UserProfile",
+  "plural": "UserProfiles",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "required": true
+    },
+    "lastName": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "password": {
+      "type": "string",
+      "required": true
+    },
+    "birthdate": {
+      "type": "date",
+      "required": false
+    },
+    "rg": {
+      "type": "Rg",
+      "required": false
+    },
+    "phoneNumber": {
+      "type": "string",
+      "required": false
+    },
+    "address": {
+      "type": "Address",
+      "required": false
+    },
+    "gender": {
+      "type": "Gender",
+      "required": false
+    },
+    "cpf": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
