@@ -38,5 +38,17 @@
   "Address": {
     "dataSource": "organizae",
     "public": true
+  },
+  "Rg": {
+    "dataSource": "organizae",
+    "public": true
+  },
+  "Gender": {
+    "dataSource": "organizae",
+    "public": true
+  },
+  "UserProfile": {
+    "dataSource": "organizae",
+    "public": true
   }
 }
