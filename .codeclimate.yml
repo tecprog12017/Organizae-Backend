@@ -1,0 +1,18 @@
+engines:
+  csslint:
+    enabled: false  
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascipt
+  eslint:
+    enabled: true  
+  fixme:
+    enabled: true
+ratings:
+  paths:
+  - "www/js/*.js"
+  - "www/js/**/*.js"
+exclude_paths: 
+  - "coverage/"pare.py"
