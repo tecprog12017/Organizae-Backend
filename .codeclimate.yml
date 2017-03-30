@@ -5,7 +5,7 @@ engines:
     enabled: true
     config:
       languages:
-      - javascipt
+      - javascript
   eslint:
     enabled: true  
   fixme:
