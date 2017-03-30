@@ -14,22 +14,22 @@
     ]
   },
   "User": {
-    "dataSource": "db"
+    "dataSource": "organizae"
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "organizae",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "organizae",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "organizae",
     "public": false
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "organizae",
     "public": false
   },
   "Message": {
