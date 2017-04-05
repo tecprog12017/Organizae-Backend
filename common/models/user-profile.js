@@ -1,36 +1,35 @@
-const CryptoJS = require('crypto-js');
+const cryptoJS = require('crypto-js');
 const secret = 'tecprog-2017/01';
+const jwt = require('jwt-simple');
 
 module.exports = function(UserProfile) {
   UserProfile.validatesUniquenessOf('email');
 
   //Method used to register a user on the application
-  UserProfile.signUp = function(user, callback) {
+  UserProfile.SignUp = function(user, callback) {
     //Regex used to validate the inputs of the user registration
     const emailRegex = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
 
     //Used to cryptograph the password of the user, to ensure security
     if (passwordRegex.test(user.password)) {
-      user.password = CryptoJS.AES.encrypt(user.password, secret);
+      user.password = cryptoJS.AES.encrypt(user.password, secret);
     }
 
     //Used to store the user registration on the database
     if (emailRegex.test(user.email)) {
       UserProfile.upsert(user, function(err, obj) {
-        if (err) {
-          console.error(err);
+        if (!err) {
+          callback(null, 200);
         } else {
-          console.log(obj);
+          callback(null, 400);
         }
       });
     }
-
-    callback(null, user);
   };
 
   //Used for the submition of sign up form for the user
-  UserProfile.remoteMethod('signUp', {
+  UserProfile.remoteMethod('SignUp', {
     http: {path: '/sign-up', verb: 'post'},
     accepts: {arg: 'user', type: 'UserProfile',
               required: true, http: {source: 'body'}},
@@ -38,30 +37,30 @@ module.exports = function(UserProfile) {
   });
 
   //Used to authenticate the user's access to the system
-  UserProfile.login = function (user, callback) {
-
-    UserProfile.findOne({where: {'email': user.email}}, function (err, obj){
+  UserProfile.LogIn = function(user, callback) {
+    UserProfile.findOne({where: {'email': user.email}}, function(err, obj) {
       if (obj != null) {
-        var password = CryptoJS.decrypt(obj.password.toString(), secret);
+        var bytes = cryptoJS.AES.decrypt(obj.password.toString(), secret);
+        var password = passwordBytes.toString(cryptoJS.enc.Utf8);
+
         if (user.password == password) {
-          callback(null, '200');
-        }
-        else {
+          obj.unsetAttribute('password');
+          let token = jwt.encode(obj, secret);
+          callback(null, token);
+        } else {
           callback(null, '400');
         }
-      }
-      else {
+      } else {
         callback(null, '400');
       }
-    })
-  }
+    });
+  };
 
   //Used for the submition of the access of the user on the system
-  UserProfile.remoteMethod('logIn', {
+  UserProfile.remoteMethod('LogIn', {
     http: {path: '/login', verb: 'post'},
-    accepts: {arg: 'user', type: 'UserProfile',
+    accepts: {arg: 'user', type: 'Object',
               required: true, http: {source: 'body'}},
-    returns: {arg: 'status', type: 'string'}
+    returns: {root: true, type: 'Object'},
   });
-
 };
