@@ -41,7 +41,7 @@ module.exports = function(UserProfile) {
     UserProfile.findOne({where: {'email': user.email}}, function(err, obj) {
       if (obj != null) {
         var bytes = cryptoJS.AES.decrypt(obj.password.toString(), secret);
-        var password = passwordBytes.toString(cryptoJS.enc.Utf8);
+        var password = bytes.toString(cryptoJS.enc.Utf8);
 
         if (user.password == password) {
           obj.unsetAttribute('password');
