@@ -1,3 +1,5 @@
+"use strict";
+
 const cryptoJS = require('crypto-js');
 const secret = 'tecprog-2017/01';
 const jwt = require('jwt-simple');
