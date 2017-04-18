@@ -65,4 +65,34 @@ module.exports = function(UserProfile) {
               required: true, http: {source: 'body'}},
     returns: {root: true, type: 'Object'},
   });
-};
+
+  //Used to assign user personal data to it's profile
+  UserProfile.addAdittionalInformation = function(user, callback){
+    UserProfile.findOne({where: {'email': user.email}}, function(err, obj){
+      if(obj != null){
+        var bytes = cryptoJS.AES.decrypt(obj.email.toString(), secret);
+        var email = bytes.toString(cryptoJS.enc.Utf8);
+
+        if(user.email == email){
+          user.cpf = obj.cpf;
+          user.rg = obj.rg;
+          user.gender = obj.gender;
+          user.adress = obj.adress;
+          user.information = obj.information;
+        } else{
+          callback(null, '400');
+        }
+      } else{
+        callback(null, '400');
+      }
+    });
+  };
+
+  //Used for the submition of the access of the user on the system
+  UserProfile.remoteMethod('addAditiionalInformation', {
+    http: {path: '/update', verb: 'post'},
+    accepts: {arg: 'user', type: 'Object',
+              required: true, http: {source: 'body'}},
+    returns: {root: true, type: 'Object'},
+  });
+}

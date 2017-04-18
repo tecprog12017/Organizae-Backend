@@ -43,6 +43,10 @@
     "dataSource": "organizae",
     "public": true
   },
+  "Cpf": {
+    "dataSource": "organizae",
+    "public": true
+  },
   "Gender": {
     "dataSource": "organizae",
     "public": true
