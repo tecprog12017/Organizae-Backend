@@ -47,7 +47,21 @@ describe('Test sign-in', function() {
         .send(loginParams)
         .end((err, res) => {
           expect(err).to.not.exist;
+          expect(res).to.have.status(200);
           expect(res.body.token).to.not.be.a('null');
+          done();
+        });
+  });
+
+  it('should sign-in without sucess', function(done) {
+    var loginParams = {email: 'test@test.com',
+                      password: 'Teste456'};
+
+    chai.request(server)
+        .post('/api/UserProfiles/login')
+        .send(loginParams)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
           done();
         });
   });
