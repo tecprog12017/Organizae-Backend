@@ -68,31 +68,28 @@ module.exports = function(UserProfile) {
 
   //Used to assign user personal data to it's profile
   UserProfile.addAdittionalInformation = function(user, callback){
-    UserProfile.findOne({where: {'email': user.email}}, function(err, obj){
-      if(obj != null){
-        var bytes = cryptoJS.AES.decrypt(obj.email.toString(), secret);
-        var email = bytes.toString(cryptoJS.enc.Utf8);
-
-        if(user.email == email){
-          user.cpf = obj.cpf;
-          user.rg = obj.rg;
-          user.gender = obj.gender;
-          user.adress = obj.adress;
-          user.information = obj.information;
-        } else{
-          callback(null, '400');
-        }
+    UserProfile.findOne({where: {'email': user.email}}, function(err, instance){
+      if(instance != null){
+        instance.updateAttributes(user, function(err, obj) {
+          if(!err){
+            callback(null, '200');
+          }else{
+            callback(null, '400');
+          }
+        });
       } else{
         callback(null, '400');
       }
     });
   };
 
+
   //Used for the submition of the access of the user on the system
-  UserProfile.remoteMethod('addAditiionalInformation', {
+  UserProfile.remoteMethod('addAdittionalInformation', {
     http: {path: '/update', verb: 'post'},
-    accepts: {arg: 'user', type: 'Object',
+    accepts: {arg: 'user', type: 'UserProfile',
               required: true, http: {source: 'body'}},
-    returns: {root: true, type: 'Object'},
+    returns: {arg:'status', type: 'string'},
   });
-}
+
+};
