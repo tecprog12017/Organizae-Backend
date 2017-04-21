@@ -63,4 +63,21 @@ module.exports = function(UserProfile) {
               required: true, http: {source: 'body'}},
     returns: {root: true, type: 'Object'},
   });
+
+  UserProfile.Delete = function(user, callback) {
+    UserProfile.findOne({where: {'email': user.email}}, function(err, obj) {
+      if (obj != null) {
+        UserProfile.remove({'email': user.email}, callback);
+      } else {
+        callback(null, 400);
+      }
+    });
+  };
+
+  UserProfile.remoteMethod('Delete', {
+    http: {path: '/delete', verb: 'post'},
+    accepts: {arg: 'user', type: 'UserProfile',
+              required: true, http: {source: 'body'}},
+    returns: {root: 'status', type: 'string'},
+  });
 };
