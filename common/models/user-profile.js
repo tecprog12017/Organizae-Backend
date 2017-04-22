@@ -72,7 +72,9 @@ module.exports = function(UserProfile) {
       if(instance != null){
         instance.updateAttributes(user, function(err, obj) {
           if(!err){
-            callback(null, '200');
+            instance.unsetAttribute('password');
+            let token = jwt.encode(instance, secret);
+            callback(null, token);
           }else{
             callback(null, '400');
           }
@@ -89,7 +91,7 @@ module.exports = function(UserProfile) {
     http: {path: '/update', verb: 'post'},
     accepts: {arg: 'user', type: 'UserProfile',
               required: true, http: {source: 'body'}},
-    returns: {arg:'status', type: 'string'},
+    returns: {root: true, type:  'Object'},
   });
 
 };
