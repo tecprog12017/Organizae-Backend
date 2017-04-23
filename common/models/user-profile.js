@@ -66,8 +66,8 @@ module.exports = function(UserProfile) {
 
   //Used to delete user's account in the system
   UserProfile.Delete = function(user, callback) {
-    UserProfile.findOne({where: {'email': user.email}}, function(err, obj) {
-      if (obj != null) {
+    UserProfile.findOne({where: {'email': user.email}}, function(err, found_user) {
+      if (found_user != null) {
         UserProfile.remove({'email': user.email}, callback(null, 200));
       } else {
         callback(null, 400);
