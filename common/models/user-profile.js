@@ -86,7 +86,7 @@ module.exports = function(UserProfile) {
   };
 
 
-  //Used for the submition of the access of the user on the system
+  //Used for the submition of the access of the user additional informations
   UserProfile.remoteMethod('addAdittionalInformation', {
     http: {path: '/update', verb: 'post'},
     accepts: {arg: 'user', type: 'UserProfile',
