@@ -39,10 +39,11 @@ module.exports = function(UserProfile) {
   //Used to authenticate the user's access to the system
   UserProfile.LogIn = function(user, callback) {
     UserProfile.findOne({where: {'email': user.email}}, function(err, obj) {
-      if (obj != null) {
+      if (user.email == obj.email) {
         var bytes = cryptoJS.AES.decrypt(obj.password.toString(), secret);
         var password = bytes.toString(cryptoJS.enc.Utf8);
 
+        //Used to return a confirmation of sucessful access to the system
         if (user.password == password) {
           obj.unsetAttribute('password');
           let token = jwt.encode(obj, secret);
