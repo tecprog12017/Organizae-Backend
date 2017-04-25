@@ -12,9 +12,7 @@ module.exports = function(Enterprise) {
 
     //Used to ensure that the owner is registered on the system
     UserProfile.findOne({where: {'email': enterprise.owner}}, function(err, obj) {
-      if (!err) {
-        console.log(enterprise);
-        console.log(obj);
+      if (obj != null) {
         //Used to check the registration on the enterprise on the system
         Enterprise.upsert(enterprise, function(err, obj) {
           //Return Success if the enterprise is not registered on the system
@@ -23,14 +21,12 @@ module.exports = function(Enterprise) {
           }
           //Return an error if the enterprise is already registered on the system
           else {
-            console.error(err);
             callback(null, 400);
           }
         });
       }
       //Return an error if the user is not registered on the system
       else {
-        console.log('AERRO1');
         callback(null, 400);
       }
     });
