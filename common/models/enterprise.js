@@ -11,7 +11,7 @@ module.exports = function(Enterprise) {
     var UserProfile = app.models.UserProfile;
 
     //Used to ensure that the owner is registered on the system
-    UserProfile.findOne({where: {'email': enterprise.owner}}, function(err, obj) {
+    UserProfile.findOne({where: {'email': enterprise.owner.email}}, function(err, obj) {
       if (obj != null) {
         //Used to check the registration on the enterprise on the system
         Enterprise.upsert(enterprise, function(err, obj) {
