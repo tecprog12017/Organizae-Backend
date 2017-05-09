@@ -11,7 +11,7 @@ var user = {firstName: 'Jesus',
             email: 'jesus123314@hotmail.com',
             password: 'Teste123'};
 
-before(function(done) {
+/*before(function(done) {
   //Creates user in system's database by signing them up
   chai.request(server)
       .post('/api/UserProfiles/sign-up')
@@ -21,9 +21,9 @@ before(function(done) {
       });
 
   done();
-});
+});*/
 
-describe('Test sign-in', function() {
+/*describe('Test sign-in', function() {
   it('should sign-in with sucess', function(done) {
     var loginParams = {email: user['email'],
                       password: user['password']};
@@ -37,3 +37,4 @@ describe('Test sign-in', function() {
         });
   });
 });
+*/
