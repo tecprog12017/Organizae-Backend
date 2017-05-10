@@ -5,5 +5,12 @@
     "database": "organizae",
     "name": "organizae",
     "connector": "mongodb"
+  },
+  "test": {
+    "host": "localhost",
+    "port": 27017,
+    "database": "testOrganizae",
+    "name": "organizae",
+    "connector": "mongodb"
   }
 }
