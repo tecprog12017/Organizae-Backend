@@ -70,7 +70,7 @@ module.exports = function(UserProfile) {
     UserProfile.findOne({where: {'email': user.email}}, function(err, foundUser) {
       //Returns a status that signals that the requisition was done sucessfully
       if (foundUser != null) {
-        UserProfile.remove({'email': user.email}, callback(null, 200));
+        UserProfile.remove({'email': user.email});
         callback(null, 200);
       }
       //Returns a status that signals that there was an error found in the requisition
