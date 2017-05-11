@@ -28,7 +28,7 @@ module.exports = function(UserProfile) {
     }
   };
 
-  //Used for the submition of sign up form for the user
+  //Used for the submission of sign up form for the user
   UserProfile.remoteMethod('SignUp', {
     http: {path: '/sign-up', verb: 'post'},
     accepts: {arg: 'user', type: 'UserProfile',
@@ -57,11 +57,30 @@ module.exports = function(UserProfile) {
     });
   };
 
-  //Used for the submition of the access of the user on the system
+  //Used for the submission of the access of the user on the system
   UserProfile.remoteMethod('LogIn', {
     http: {path: '/login', verb: 'post'},
     accepts: {arg: 'user', type: 'Object',
               required: true, http: {source: 'body'}},
     returns: {root: true, type: 'Object'},
+  });
+
+  //Used to delete user's account in the system
+  UserProfile.Delete = function(user, callback) {
+    UserProfile.findOne({where: {'email': user.email}}, function(err, found_user) {
+      if (found_user != null) {
+        UserProfile.remove({'email': user.email}, callback(null, 200));
+      } else {
+        callback(null, 400);
+      }
+    });
+  };
+
+  //Used for the submission of user's account deletion request on the system
+  UserProfile.remoteMethod('Delete', {
+    http: {path: '/delete', verb: 'post'},
+    accepts: {arg: 'user', type: 'UserProfile',
+              required: true, http: {source: 'body'}},
+    returns: {arg: 'status', type: 'string'},
   });
 };
