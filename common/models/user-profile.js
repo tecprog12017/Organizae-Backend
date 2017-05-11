@@ -66,19 +66,23 @@ module.exports = function(UserProfile) {
   });
 
   //Used to delete user's account in the system
-  UserProfile.Delete = function(user, callback) {
-    UserProfile.findOne({where: {'email': user.email}}, function(err, found_user) {
-      if (found_user != null) {
+  UserProfile.DeleteUserProfile = function(user, callback) {
+    UserProfile.findOne({where: {'email': user.email}}, function(err, foundUser) {
+      //Returns a status that signals that the requisition was done sucessfully
+      if (foundUser != null) {
         UserProfile.remove({'email': user.email}, callback(null, 200));
-      } else {
+        callback(null, 200);
+      }
+      //Returns a status that signals that there was an error found in the requisition
+      else {
         callback(null, 400);
       }
     });
   };
 
   //Used for the submission of user's account deletion request on the system
-  UserProfile.remoteMethod('Delete', {
-    http: {path: '/delete', verb: 'post'},
+  UserProfile.remoteMethod('DeleteUserProfile', {
+    http: {path: '/delete-user', verb: 'post'},
     accepts: {arg: 'user', type: 'UserProfile',
               required: true, http: {source: 'body'}},
     returns: {arg: 'status', type: 'string'},

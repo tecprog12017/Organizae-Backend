@@ -7,11 +7,14 @@ var app = require('../server/server');
 //Opens the google chrome browser to test http requests
 chai.use(chaiHttp);
 
+app.models.UserProfile.attachTo(app.dataSources.test);
+app.models.enterprise.attachTo(app.dataSources.test);
+
 //User Profile used to populate the test database
 const newUser = {
   firstName: 'Matheus',
   lastName: 'Juju',
-  email: "matheus@gmail.com",
+  email: "matheuss@gmail.com",
   password: "Test1234"
 }
 
@@ -29,7 +32,7 @@ const correctEnterprise = {
   owner: {
     firstName: 'Matheus',
     lastName: 'Juju',
-    email: "matheus@gmail.com"
+    email: "matheuss@gmail.com"
   }
 }
 
@@ -56,20 +59,20 @@ const incorrectEnterprise = {
 describe('Enterprise Tests', function() {
 
   /*Creating the user that will be the owner of the enterprises on the test database
-    Before the each test begins */
-  /*beforeEach(function (done) {
+  before the each test begins */
+  before(function() {
     chai.request(server)
-      .post('/api/UserProfiles/sign-up')
-      .send(newUser)
-      .end((err, res) => {
-        done();
-      });
-  });
+    .post('/api/UserProfiles/sign-up')
+    .send(newUser)
+    .end((err, res) => {
+      console.log(res.body['status']);
+      done();
+  })
 
-  afterEach(function (done) {
+  after(function (done) {
     userModel.collection.drop();
     enterpriseModel.collection.drop();
-  })*/
+  })
 
   //Testing reponse provided by post http request used to register enterprise
   it('should register an enterprise', function(done){
