@@ -62,7 +62,6 @@ describe('Enterprise Tests', function() {
       .post('/api/UserProfiles/sign-up')
       .send(newUser)
       .end((err, res) => {
-        console.error(res.body['status']);
         done();
       });
   });
@@ -73,10 +72,14 @@ describe('Enterprise Tests', function() {
       .post('/api/UserProfiles/delete-user')
       .send(newUser)
       .end((err, res) => {
-        console.log(res.body['status']);
       });
 
-    //chai.request(server)
+    chai.request(server)
+      .post('/api/enterprises/delete-enterprise')
+      .send(correctEnterprise)
+      .end((err, res) => {
+        done();
+      });
   });
 
   //Testing reponse provided by post http request used to register enterprise

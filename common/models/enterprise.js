@@ -39,4 +39,35 @@ module.exports = function(Enterprise) {
     returns: {arg: 'status', type: 'string'}
   });
 
+  Enterprise.Delete = function(enterprise, callback) {
+    //Finds the enterprise that will be deleted
+    Enterprise.findOne({where: {'cnpj': enterprise.cnpj}}, function (err, foundEnterprise){
+      //Runs normally
+      if(foundEnterprise != null){
+        Enterprise.remove({'cnpj': enterprise.cnpj}, function(err, obj){
+          //Returns a status showing that the enterprise was deleted sucessfully
+          if(!err) {
+            callback(null, 200);
+          }
+          //Returns a status showing that there was an error occurred on the http request
+          else {
+            console.error(err);
+            callback(null, 400);
+          }
+        });
+      }
+      //Returns a status showing that an error ocurred in the request
+      else {
+        callback(null, 400);
+      }
+    });
+  };
+
+  Enterprise.remoteMethod('Delete', {
+    http: {path: '/delete-enterprise', verb: 'post'},
+    accepts: {arg: 'enterprise', type: 'Object',
+              required: true, http: {source: 'body'}},
+    returns: {arg: 'status', type: 'string'}
+  });
+
 };
