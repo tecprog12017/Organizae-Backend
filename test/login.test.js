@@ -13,6 +13,7 @@ var user = {firstName: 'Lucas',
             email: 'hugo@hotmail.com',
             password: 'Teste123'};
 
+
 before(function(done) {
   mongoose.connect('mongodb://localhost/organizae');
   const db = mongoose.connection;
@@ -20,7 +21,6 @@ before(function(done) {
   db.once('open', function() {
     console.log('We are connected to test database!');
   });
-
   //Creates user in system's database by signing them up
   chai.request(server)
       .post('/api/UserProfiles/sign-up')
@@ -30,7 +30,8 @@ before(function(done) {
       });
 
   done();
-});
+});*/
+
 
 after(function(done) {
   mongoose.connection.db.dropDatabase(function() {
@@ -66,3 +67,4 @@ describe('Test sign-in', function() {
         });
   });
 });
+*/

@@ -28,7 +28,7 @@ module.exports = function(UserProfile) {
     }
   };
 
-  //Used for the submition of sign up form for the user
+  //Used for the submission of sign up form for the user
   UserProfile.remoteMethod('SignUp', {
     http: {path: '/sign-up', verb: 'post'},
     accepts: {arg: 'user', type: 'UserProfile',
@@ -39,10 +39,11 @@ module.exports = function(UserProfile) {
   //Used to authenticate the user's access to the system
   UserProfile.LogIn = function(user, callback) {
     UserProfile.findOne({where: {'email': user.email}}, function(err, obj) {
-      if (obj != null) {
+      if (user.email == obj.email) {
         var bytes = cryptoJS.AES.decrypt(obj.password.toString(), secret);
         var password = bytes.toString(cryptoJS.enc.Utf8);
 
+        //Used to return a confirmation of sucessful access to the system
         if (user.password == password) {
           obj.unsetAttribute('password');
           let token = jwt.encode(obj, secret);
@@ -56,11 +57,34 @@ module.exports = function(UserProfile) {
     });
   };
 
-  //Used for the submition of the access of the user on the system
+  //Used for the submission of the access of the user on the system
   UserProfile.remoteMethod('LogIn', {
     http: {path: '/login', verb: 'post'},
     accepts: {arg: 'user', type: 'Object',
               required: true, http: {source: 'body'}},
     returns: {root: true, type: 'Object'},
+  });
+
+  //Used to delete user's account in the system
+  UserProfile.DeleteUserProfile = function(user, callback) {
+    UserProfile.findOne({where: {'email': user.email}}, function(err, foundUser) {
+      //Returns a status that signals that the requisition was done sucessfully
+      if (foundUser != null) {
+        UserProfile.remove({'email': user.email});
+        callback(null, 200);
+      }
+      //Returns a status that signals that there was an error found in the requisition
+      else {
+        callback(null, 400);
+      }
+    });
+  };
+
+  //Used for the submission of user's account deletion request on the system
+  UserProfile.remoteMethod('DeleteUserProfile', {
+    http: {path: '/delete-user', verb: 'post'},
+    accepts: {arg: 'user', type: 'UserProfile',
+              required: true, http: {source: 'body'}},
+    returns: {arg: 'status', type: 'string'},
   });
 };
