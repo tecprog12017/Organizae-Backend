@@ -104,6 +104,7 @@ describe('Enterprise Tests', function() {
       .post('/api/enterprises/delete-enterprise')
       .send(correctEnterprise)
       .end((err, res) => {
+        expect(res.body['status']).to.equal(200);
         done();
       });
   });
@@ -114,6 +115,7 @@ describe('Enterprise Tests', function() {
       .post('/api/enterprises/delete-enterprise')
       .send(incorrectEnterprise)
       .end((err, res) => {
+        expect(res.body['status']).to.equal(400);
         done();
       });
   });

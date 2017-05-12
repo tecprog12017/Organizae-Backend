@@ -1,12 +1,22 @@
 'use strict';
 //Importing references to all the other models
 var app = require('../../server/server');
+var assert = require('assert');
 
 module.exports = function(Enterprise) {
   Enterprise.validatesUniquenessOf('cnpj');
 
   //Method used to register an enterprise on the database
   Enterprise.Register = function(enterprise, callback) {
+    //Used to check if the enterprise object was passed correctly from the client side
+    if (enterprise != null) {
+      //Does nothing
+    }
+    //Drops the server
+    else{
+      assert(false);
+    }
+    
     //Referencing User Profile model
     var UserProfile = app.models.UserProfile;
 
@@ -40,6 +50,16 @@ module.exports = function(Enterprise) {
   });
 
   Enterprise.Delete = function(enterprise, callback) {
+
+    //Used to check if the enterprise object was passed correctly from the client side
+    if (enterprise != null) {
+      //Does nothing
+    }
+    //Drops the server
+    else{
+      assert(false);
+    }
+
     //Finds the enterprise that will be deleted
     Enterprise.findOne({where: {'cnpj': enterprise.cnpj}}, function (err, foundEnterprise){
       //Runs normally
