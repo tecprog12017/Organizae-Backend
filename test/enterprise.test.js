@@ -72,18 +72,12 @@ describe('Enterprise Tests', function() {
       .post('/api/UserProfiles/delete-user')
       .send(newUser)
       .end((err, res) => {
-      });
-
-    chai.request(server)
-      .post('/api/enterprises/delete-enterprise')
-      .send(correctEnterprise)
-      .end((err, res) => {
         done();
       });
   });
 
-  //Testing reponse provided by post http request used to register enterprise
-  it('should register an enterprise', function(done){
+  //Testing reponse provided by post http request used to register an enterprise
+  it('should register an enterprise', function (done) {
     chai.request(server)
       .post('/api/enterprises/register-enterprise')
       .send(correctEnterprise)
@@ -93,8 +87,8 @@ describe('Enterprise Tests', function() {
       });
   });
 
-  //Testing response provided by post http request used to not register enterprise
-  it('should not register an enterprise', function(done){
+  //Testing response provided by post http request used to register an enterprise
+  it('should not register an enterprise', function (done) {
     chai.request(server)
     .post('/api/enterprises/register-enterprise')
     .send(incorrectEnterprise)
@@ -102,6 +96,26 @@ describe('Enterprise Tests', function() {
       expect(res.body['status']).to.equal(400);
       done();
     });
+  });
+
+  //Testing response provided by post http request used to delete an enterprise
+  it('should delete an enterprise', function (done) {
+    chai.request(server)
+      .post('/api/enterprises/delete-enterprise')
+      .send(correctEnterprise)
+      .end((err, res) => {
+        done();
+      });
+  });
+
+  //Testing response provided by post http request used to delete an enterprise
+  it('should not delete an enterprise', function (done) {
+    chai.request(server)
+      .post('/api/enterprises/delete-enterprise')
+      .send(incorrectEnterprise)
+      .end((err, res) => {
+        done();
+      });
   });
 
 });
