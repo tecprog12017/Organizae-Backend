@@ -4,8 +4,6 @@ var chaiHttp  = require('chai-http');
 var server = 'http://localhost:3000';
 var UserProfile = require('../common/models/user-profile');
 
-const mongoose = require('mongoose');
-
 chai.use(chaiHttp);
 
 var user = {firstName: 'Lucas',
@@ -13,34 +11,29 @@ var user = {firstName: 'Lucas',
             email: 'hugo@hotmail.com',
             password: 'Teste123'};
 
-
 before(function(done) {
-  mongoose.connect('mongodb://localhost/organizae');
-  const db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'connection error'));
-  db.once('open', function() {
-    console.log('We are connected to test database!');
-  });
   //Creates user in system's database by signing them up
   chai.request(server)
       .post('/api/UserProfiles/sign-up')
       .send(user)
       .end((err, res) => {
-        expect(res.body['status']).to.equal(200);
+        expect(res).to.have.status(200);
       });
 
   done();
-});*/
+});
 
-
-after(function(done) {
-  mongoose.connection.db.dropDatabase(function() {
-    mongoose.connection.close(done);
-  });
+after(function (done) {
+  chai.request(server)
+    .post('/api/UserProfiles/delete-user')
+    .send(user)
+    .end((err, res) => {
+      done();
+    });
 });
 
 describe('Test sign-in', function() {
-  it('should sign-in with sucess', function(done) {
+  it('should sign-in', function(done) {
     var loginParams = {email: user['email'],
                       password: user['password']};
     chai.request(server)
@@ -54,9 +47,9 @@ describe('Test sign-in', function() {
         });
   });
 
-  it('should sign-in without sucess', function(done) {
+  it('should not sign-in', function(done) {
     var loginParams = {email: 'test@test.com',
-                      password: 'Teste456'};
+                      password: 'Test456'};
 
     chai.request(server)
         .post('/api/UserProfiles/login')
@@ -67,4 +60,3 @@ describe('Test sign-in', function() {
         });
   });
 });
-*/
