@@ -23,7 +23,7 @@ before(function(done) {
   done();
 });
 
-after(function (done) {
+after(function(done) {
   chai.request(server)
     .post('/api/UserProfiles/delete-user')
     .send(user)
@@ -55,7 +55,8 @@ describe('Test sign-in', function() {
         .post('/api/UserProfiles/login')
         .send(loginParams)
         .end((err, res) => {
-          expect(res).to.have.status(400);
+          expect(res.body.token).to.be.a('undefined');
+          expect(res.body['status']).to.equal(400);
           done();
         });
   });
