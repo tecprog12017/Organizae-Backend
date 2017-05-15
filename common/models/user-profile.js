@@ -38,31 +38,45 @@ module.exports = function(UserProfile) {
 
   //Used to authenticate the user's access to the system
   UserProfile.LogIn = function(user, callback) {
-    UserProfile.findOne({where: {'email': user.email}}, function(err, obj) {
-      if (user.email == obj.email) {
-        var bytes = cryptoJS.AES.decrypt(obj.password.toString(), secret);
-        var password = bytes.toString(cryptoJS.enc.Utf8);
-
-        //Used to return a confirmation of sucessful access to the system
-        if (user.password == password) {
-          obj.unsetAttribute('password');
-          let token = jwt.encode(obj, secret);
-          callback(null, token);
-        } else {
-          callback(null, '400');
+    UserProfile.findOne({where: {'email': user.email}}, function(err, foundUser) {
+      //Checks if found user exists
+      if (foundUser != undefined && foundUser != null){
+        //Checks if user's email is the same as the one the found one's email
+        if (user.email == foundUser.email) {
+          var bytes = cryptoJS.AES.decrypt(foundUser.password.toString(), secret);
+          var password = bytes.toString(cryptoJS.enc.Utf8);
+          //Used to return a confirmation of sucessful access to the system
+          if (user.password == password) {
+            obj.unsetAttribute('password');
+            let token = jwt.encode(foundUser, secret);
+            callback(null, token);
+          }
+          //If user's password is different than the found user's one return error
+          else {
+            callback(null, 400);
+          }
         }
-      } else {
-        callback(null, '400');
-      }
-    });
-  };
+        //If user's email is different than the found user's one return error
+        else {
+          callback(null, 400);
+        }
+    }
+    //If found user is undefined, ie it could not be found, return error
+    else {
+      callback(null, 400);
+    }
+  });
+};
 
   //Used for the submission of the access of the user on the system
   UserProfile.remoteMethod('LogIn', {
     http: {path: '/login', verb: 'post'},
     accepts: {arg: 'user', type: 'Object',
               required: true, http: {source: 'body'}},
-    returns: {root: true, type: 'Object'},
+    returns: [
+              {arg: 'status', type: 'string'},
+              {root: true, type: 'Object'},
+             ],
   });
 
   //Used to delete user's account in the system
