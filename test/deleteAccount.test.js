@@ -1,4 +1,4 @@
-/*var expect = require('chai').expect;
+var expect = require('chai').expect;
 var chai = require('chai');
 var chaiHttp  = require('chai-http');
 var server = 'http://localhost:3000';
@@ -27,7 +27,7 @@ before(function(done) {
   const db = mongoose.connection;
   db.on('error', console.error.bind(console, 'connection error'));
   db.once('open', function() {
-    console.log('We are connected to test database!');
+    //do nothing
   });
 
   //Creates user in system's database by signing them up
@@ -52,13 +52,12 @@ describe('Test delete', function() {
   it('should delete account with sucess', function(done) {
     //Sends request to delete user's account
     chai.request(server)
-        .post('/api/UserProfiles/delete')
+        .post('/api/UserProfiles/delete-user')
         .send(user)
         .end((err, res) => {
           expect(err).to.not.exist;
-          console.log(res.body.status);
+          console.log(res);
           expect(res.body.status).to.equal(200);
-
           expect(res.body.token).to.not.exist;
 
           // Checks whether or not the user was deleted
@@ -80,7 +79,7 @@ describe('Test delete', function() {
 
     // Sends request to try to delete unregistered user
     chai.request(server)
-        .post('/api/UserProfiles/delete')
+        .post('/api/UserProfiles/delete-user')
         .send(fakeUser)
         .end((err, res) => {
           expect(err).to.not.exist;
@@ -97,4 +96,3 @@ describe('Test delete', function() {
         });
   });
 });
-*/
