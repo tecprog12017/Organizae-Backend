@@ -40,7 +40,7 @@ module.exports = function(UserProfile) {
   UserProfile.LogIn = function(user, callback) {
     UserProfile.findOne({where: {'email': user.email}}, function(err, foundUser) {
       //Checks if found user exists
-      if (foundUser != undefined && foundUser != null){
+      if (foundUser != undefined && foundUser != null) {
         //Checks if user's email is the same as the one the found one's email
         if (user.email == foundUser.email) {
           var bytes = cryptoJS.AES.decrypt(foundUser.password.toString(), secret);
@@ -50,23 +50,20 @@ module.exports = function(UserProfile) {
             obj.unsetAttribute('password');
             let token = jwt.encode(foundUser, secret);
             callback(null, token);
-          }
-          //If user's password is different than the found user's one return error
-          else {
+          } else {
+            //If user's password is different than the found user's one return error
             callback(null, 400);
           }
-        }
-        //If user's email is different than the found user's one return error
-        else {
+        } else {
+          //If user's email is different than the found user's one return error
           callback(null, 400);
         }
-    }
-    //If found user is undefined, ie it could not be found, return error
-    else {
-      callback(null, 400);
-    }
-  });
-};
+      } else {
+        //If found user is undefined, ie it could not be found, return error
+        callback(null, 400);
+      }
+    });
+  };
 
   //Used for the submission of the access of the user on the system
   UserProfile.remoteMethod('LogIn', {
@@ -76,7 +73,7 @@ module.exports = function(UserProfile) {
     returns: [
               {arg: 'status', type: 'string'},
               {root: true, type: 'Object'},
-             ],
+    ],
   });
 
   //Used to delete user's account in the system
@@ -86,9 +83,8 @@ module.exports = function(UserProfile) {
       if (foundUser != null) {
         UserProfile.remove({'email': user.email});
         callback(null, 200);
-      }
-      //Returns a status that signals that there was an error found in the requisition
-      else {
+      } else {
+        //Returns a status that signals that there was an error found in the requisition
         callback(null, 400);
       }
     });
