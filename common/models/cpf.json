@@ -1,21 +1,17 @@
 {
-  "name": "Gender",
-  "plural": "Genders",
+  "name": "Cpf",
+  "plural": "Cpfs",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "genderIdentity": {
+    "cpf": {
       "type": "string",
       "required": true
     },
-    "pronoun": {
-      "type": "string",
-      "required": true
-    },
-    "genderUserEmail": {
+    "cpfUserEmail": {
       "type": "string",
       "required": true
     }
