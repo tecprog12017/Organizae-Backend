@@ -10,6 +10,10 @@
     "cpf": {
       "type": "string",
       "required": true
+    },
+    "cpfUserEmail": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],
