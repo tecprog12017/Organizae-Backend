@@ -28,6 +28,10 @@
     },
     "complement": {
       "type": "string"
+    },
+    "addressUserEmail": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],
