@@ -1,5 +1,3 @@
-"use strict";
-
 const cryptoJS = require('crypto-js');
 const secret = 'tecprog-2017/01';
 const jwt = require('jwt-simple');
@@ -74,99 +72,103 @@ module.exports = function(UserProfile) {
   });
 
   //Used to assign user personal data to it's profile
-  UserProfile.addAdittionalInformation = function(user, callback){
-    UserProfile.findOne({where: {'email': user.email}}, function(err, instance){
-      UserProfile.insertInfos(user, instance, function(err, userProfile){
-          if(err == 200){
-              if(instance != null){
-                instance.updateAttributes(userProfile, function(err, obj) {
-                  if(!err){
-                    instance.unsetAttribute('password');
-                    let token = jwt.encode(instance, secret);
-                    callback(null, token);
-                  }else{
-                    callback(null, '400');
-                  }
-                });
-              } else{
+  UserProfile.addAdittionalInformation = function(user, callback) {
+    UserProfile.findOne({where: {'email': user.email}}, function(err, instance) {
+      UserProfile.insertInfos(user, instance, function(err, userProfile) {
+        if (err == 200) {
+          if (instance != null) {
+            instance.updateAttributes(userProfile, function(err, obj) {
+              if (!err) {
+                instance.unsetAttribute('password');
+                let token = jwt.encode(instance, secret);
+                callback(null, token);
+              } else {
                 callback(null, '400');
               }
-          }else{
-            console.log("some error ocurred")
+            });
+          } else {
+            callback(null, '400');
           }
-
+        } else {
+          console.log('some error ocurred');
+        }
       });
-
     });
   };
 
   //This method handles the insertion of additional informations to the user profile.
-  UserProfile.insertInfos = function(userNewData, userOldData, callback){
+  UserProfile.insertInfos = function(userNewData, userOldData, callback) {
     var resultErro = 200;
     var newUserProfile = new UserProfile();
     newUserProfile = userOldData;
 
     //This queue handles with the async of javascript and enables sequential calls.
     var insertInfosQueue = async.queue(function(task, callback) {
-      task.insertFunction(task.newValue, task.userEmail, function(err, resultObject){
+      task.insertFunction(task.newValue, task.userEmail, function(err, resultObject) {
         callback(err, resultObject);
       });
     });
 
     //Push the insertion of a new Rg to the queue
-    insertInfosQueue.push({insertFunction: Rg.insertNewRg, newValue: userNewData.rg, userEmail: userOldData.email}, function(err, resultObject) {
-      if(err == 200){
-        newUserProfile.rg = resultObject;
-      }else{
-        resultErro = err;
-      }
-    });
+    insertInfosQueue.push({insertFunction: Rg.insertNewRg, newValue: userNewData.rg, userEmail: userOldData.email},
+      function(err, resultObject) {
+        if (err == 200) {
+          newUserProfile.rg = resultObject;
+        } else {
+          resultErro = err;
+        }
+      });
 
     //Push the insertion of a new CPF to the queue
-    insertInfosQueue.push({insertFunction: Cpf.insertNewCpf, newValue: userNewData.cpf, userEmail: userOldData.email}, function(err, resultObject) {
-      if(err == 200){
-        newUserProfile.cpf = resultObject;
-      }else{
-        resultErro = err;
-      }
-    });
+    insertInfosQueue.push({insertFunction: Cpf.insertNewCpf, newValue: userNewData.cpf, userEmail: userOldData.email},
+      function(err, resultObject) {
+        if (err == 200) {
+          newUserProfile.cpf = resultObject;
+        } else {
+          resultErro = err;
+        }
+      });
 
     //Push the insertion of a new Address to the queue
-    insertInfosQueue.push({insertFunction: Address.insertNewAddress, newValue: userNewData.address, userEmail: userOldData.email}, function(err, resultObject) {
-      if(err == 200){
-        newUserProfile.address = resultObject;
-      }else{
-        resultErro = err;
-      }
-    });
+    insertInfosQueue.push({insertFunction: Address.insertNewAddress, newValue: userNewData.address, userEmail: userOldData.email},
+      function(err, resultObject) {
+        if (err == 200) {
+          newUserProfile.address = resultObject;
+        } else {
+          resultErro = err;
+        }
+      });
 
     //Push the insertion of a new Gender to the queue
-    insertInfosQueue.push({insertFunction: Gender.insertNewGender, newValue: userNewData.gender, userEmail: userOldData.email}, function(err, resultObject) {
-      if(err == 200){
-        newUserProfile.gender = resultObject;
-      }else{
-        resultErro = err;
-      }
-    });
+    insertInfosQueue.push({insertFunction: Gender.insertNewGender, newValue: userNewData.gender, userEmail: userOldData.email},
+      function(err, resultObject) {
+        if (err == 200) {
+          newUserProfile.gender = resultObject;
+        } else {
+          resultErro = err;
+        }
+      });
 
     //Push the insertion of the new additional Information to the queue
-    insertInfosQueue.push({insertFunction: AdditionalInformation.insertNewAdditionalInfos, newValue: userNewData.information, userEmail: userOldData.email}, function(err, resultObject) {
-      if(err == 200){
-        newUserProfile.birthdate = resultObject.birthdate;
-        newUserProfile.phoneNumber = resultObject.phone;
-      }else{
-        resultErro = err;
-      }
-      callback(resultErro, newUserProfile);
-    });
-  }
+    insertInfosQueue.push({insertFunction: AdditionalInformation.insertNewAdditionalInfos, newValue: userNewData.information,
+    userEmail: userOldData.email},
+      function(err, resultObject) {
+        if (err == 200) {
+          newUserProfile.birthdate = resultObject.birthdate;
+          newUserProfile.phoneNumber = resultObject.phone;
+        } else {
+          resultErro = err;
+        }
+        callback(resultErro, newUserProfile);
+      });
+  };
 
   //Used for the submition of the access of the user additional informations
   UserProfile.remoteMethod('addAdittionalInformation', {
     http: {path: '/update', verb: 'post'},
     accepts: {arg: 'user', type: 'UserProfile',
               required: true, http: {source: 'body'}},
-    returns: {root: true, type:  'Object'},
+    returns: {root: true, type: 'Object'},
   });
 
   //Used to delete user's account in the system
@@ -191,5 +193,4 @@ module.exports = function(UserProfile) {
               required: true, http: {source: 'body'}},
     returns: {arg: 'status', type: 'string'},
   });
-
 };
