@@ -7,7 +7,7 @@ module.exports = function(Gender) {
 
 };
 
-//This method make insertion of the gender information to a user.
+//This method make insertion of the gender information to the user at request.
 module.exports.insertNewGender = function(newGender, userEmail, callback) {
   var genderModel = loopback.getModel('Gender');
 
@@ -66,15 +66,15 @@ validateGender = function(Gender) {
 validateGenderIdentity = function(genderIdentity) {
   console.log('Gender Identity');
   if (validate.isNull(genderIdentity)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     if (validate.isEmpty(genderIdentity)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (!validate.isAlphabetic(genderIdentity)) {
-        console.log('is not alphabetic');
+        console.error('is not alphabetic');
         return false;
       } else {
         return true;
@@ -87,15 +87,15 @@ validateGenderIdentity = function(genderIdentity) {
 validatePronoun = function(pronoun) {
   console.log('Pronoun');
   if (validate.isNull(pronoun)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     if (validate.isEmpty(pronoun)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (!validate.isAlphabetic(pronoun)) {
-        console.log('is not alphabetic');
+        console.error('is not alphabetic');
         return false;
       } else {
         return true;

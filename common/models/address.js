@@ -46,7 +46,7 @@ module.exports.insertNewAddress = function(newAddress, userEmail, callback) {
   });
 };
 
-//This method validate all single properties of address to return the real context of a given address.
+//This method validate all single predefined properties of address to return the real context of a given address.
 validateAddress = function(Address) {
   const addressCepIsValid = validateAddressCEP(Address.cep);
   const addressCityIsValid = validateAddressCity(Address.city);
@@ -64,20 +64,20 @@ validateAddress = function(Address) {
 validateAddressCEP = function(addressCep) {
   console.log('Address CEP');
   if (validate.isNull(addressCep)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     const cep = addressCep.toString();
     if (validate.isEmpty(cep)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (!validate.isNumeric(addressCep)) {
-        console.log('is not numeric');
+        console.error('is not numeric');
         return false;
       } else {
         if (!checkSizeOfCEPCode(addressCep)) {
-          console.log('is not at size ');
+          console.error('is not at size ');
           return false;
         } else {
           return true;
@@ -91,15 +91,15 @@ validateAddressCEP = function(addressCep) {
 validateAddressCity = function(addressCity) {
   console.log('Address City');
   if (validate.isNull(addressCity)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     if (validate.isEmpty(addressCity)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (!validate.isAlphabetic(addressCity)) {
-        console.log('is not alphabetic');
+        console.error('is not alphabetic');
         return false;
       } else {
         return true;
@@ -108,23 +108,23 @@ validateAddressCity = function(addressCity) {
   }
 };
 
-//Check if the given state initial follows the pattern of the brazilian states initials.
+//Check if the given state initial follows the pattern of the brazilian states initials (ex.: df).
 validateAddressState = function(addressState) {
   console.log('Address State');
   if (validate.isNull(addressState)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     if (validate.isEmpty(addressState)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (!validate.isAlphabetic(addressState)) {
-        console.log('is not alphabetic');
+        console.error('is not alphabetic');
         return false;
       } else {
         if (!checkSizeOfAddressStateCode(addressState)) {
-          console.log('is not at the size ');
+          console.error('is not at the size ');
           return false;
         } else {
           return true;
@@ -138,16 +138,16 @@ validateAddressState = function(addressState) {
 validateAddressNumber = function(addressNumber) {
   console.log('Address Number');
   if (validate.isNull(addressNumber)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     const number = addressNumber.toString();
     if (validate.isEmpty(number)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (!validate.isNumeric(addressNumber)) {
-        console.log('is not numeric');
+        console.error('is not numeric');
         return false;
       } else {
         return true;

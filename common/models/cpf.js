@@ -51,23 +51,23 @@ validateCPF = function(CPF) {
   return cpfIsValid;
 };
 
-//Check if the cpf number
+//Check if the cpf number attend the defined patterns.
 cpfIsCorrect = function(cpf) {
   console.log('CPF');
   if (validate.isNull(cpf)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     if (validate.isEmpty(cpf)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (!validate.isNumeric(cpf)) {
-        console.log('is not numeric');
+        console.error('is not numeric');
         return false;
       } else {
         if (!cpfIsValid(cpf)) {
-          console.log('Not a valid cpf');
+          console.error('Not a valid cpf');
           return false;
         } else {
           return true;
@@ -77,7 +77,7 @@ cpfIsCorrect = function(cpf) {
   }
 };
 
-//Here is checked the veracity of the given CPF number.
+//Here is checked the veracity of the given CPF number by calculating the last two digits.
 cpfIsValid = function(cpf) {
   const firstDigitIsValid = validateFirstDigit(cpf);
   const secondDigitIsValid = validateSecondDigit(cpf);
@@ -89,7 +89,7 @@ cpfIsValid = function(cpf) {
   }
 };
 
-//Based on cpf number check if the first verify digit is following the CPF pattern.
+//Based on first nine cpf's numbers check if the first verify digit is following the CPF pattern.
 validateFirstDigit = function(cpf) {
   const startValueOfHeights = 10;
   var sumOfValuesByHeight = 0;
@@ -109,7 +109,7 @@ validateFirstDigit = function(cpf) {
   }
 };
 
-//Based on cpf number and the first digit check if the second verify digit is following the CPF pattern.
+//Based on the first nine cpf's numbers plus the first verify digit's check if the second verify digit is following the CPF pattern.
 validateSecondDigit = function(cpf) {
   const startValueOfHeights = 11;
   var sumOfValuesByHeight = 0;
@@ -157,7 +157,7 @@ subtractElevenByValue = function(value) {
   return result;
 };
 
-//Method to evalute if the calculate digit is equal to the given digit by user.
+//Method to evalute if the calculate digit is equal to the given digit by user, based on the brazilian CPF rules.
 checkDigit = function(value, digit) {
   const valueToCheckDigit = 9;
   const digitAsNumber = parseInt(digit);

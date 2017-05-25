@@ -8,6 +8,7 @@ const async = require ('async');
 module.exports.insertNewAdditionalInfos = function(newAdditionalInfos, userEmail, callback) {
   var userProfileModel = loopback.getModel('UserProfile');
 
+  //This queue makes possible wait the callback of upsert.
   var upsertQueue = async.queue(function(task, callback) {
     const isAdditionalInfosValid = validateAdditionalInfos(newAdditionalInfos);
 
@@ -18,6 +19,7 @@ module.exports.insertNewAdditionalInfos = function(newAdditionalInfos, userEmail
     }
   });
 
+  //This push one action to the queue.
   upsertQueue.push({name: 'additionalInformation'}, function(err, resultObject) {
     callback(err, resultObject);
   });
@@ -39,19 +41,19 @@ validateAdditionalInfos = function(additionalInformation) {
 validateBirthdate = function(birthdate) {
   console.log('Birthdate');
   if (validate.isNull(birthdate)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     if (validate.isEmpty(birthdate)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (birthdateIsAfterToday(birthdate)) {
-        console.log('the birthdate greater than today');
+        console.error('the birthdate greater than today');
         return false;
       } else {
         if (birthdateIsTooBig(birthdate)) {
-          console.log('you are the oldest man in the world');
+          console.error('you are the oldest man in the world');
           return false;
         } else {
           return true;
@@ -61,19 +63,19 @@ validateBirthdate = function(birthdate) {
   }
 };
 
-//Check if phone number adopt correctly the properties.
+//Check if phone number adopt correctly the properties predefined.
 validatePhoneNumber = function(phoneNumber) {
   console.log('Phone Number');
   if (validate.isNull(phoneNumber)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     if (validate.isEmpty(phoneNumber)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (!validate.isNumeric(phoneNumber)) {
-        console.log('the phone number is not numeric');
+        console.error('the phone number is not numeric');
         return false;
       } else {
         return true;

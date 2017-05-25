@@ -93,7 +93,7 @@ module.exports = function(UserProfile) {
             callback(null, '400');
           }
         } else {
-          console.log('some error ocurred');
+          console.error('some error ocurred');
         }
       });
     });

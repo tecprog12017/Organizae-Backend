@@ -63,19 +63,19 @@ validateRg = function(Rg) {
 validateRgNumber = function(RgNumber) {
   console.log('Rg Number');
   if (validate.isNull(RgNumber)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     if (validate.isEmpty(RgNumber)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (!validate.isNumeric(RgNumber)) {
-        console.log('is not numeric');
+        console.error('is not numeric');
         return false;
       } else {
         if (!checkMinimumSizeOfRgNumber(RgNumber)) {
-          console.log('is not minimum size');
+          console.error('is not minimum size');
           return false;
         } else {
           return true;
@@ -87,21 +87,21 @@ validateRgNumber = function(RgNumber) {
 
 //Check if RgExpeditionState is corrected set and follow the properties requirements.
 validateRgExpeditionState = function(RgExpeditionState) {
-  console.log('Rg Expedition State');
+  console.info('Rg Expedition State');
   if (validate.isNull(RgExpeditionState)) {
-    console.log('is null');
+    console.error('is null');
     return false;
   } else {
     if (validate.isEmpty(RgExpeditionState)) {
-      console.log('is empty');
+      console.error('is empty');
       return false;
     } else {
       if (!validate.isAlphabetic(RgExpeditionState)) {
-        console.log('is not alphabetic');
+        console.error('is not alphabetic');
         return false;
       } else {
         if (!checkSizeOfRgStateCode(RgExpeditionState)) {
-          console.log('is not at the size');
+          console.error('is not at the size');
           return false;
         } else {
           return true;
