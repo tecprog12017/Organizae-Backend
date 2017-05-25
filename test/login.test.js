@@ -13,7 +13,6 @@ var user = {firstName: 'Lucas',
             email: 'hugo@hotmail.com',
             password: 'Teste123'};
 
-
 before(function(done) {
   mongoose.connect('mongodb://localhost/organizae');
   const db = mongoose.connection;
@@ -27,11 +26,9 @@ before(function(done) {
       .send(user)
       .end((err, res) => {
         expect(res.body['status']).to.equal(200);
+        done();
       });
-
-  done();
-});*/
-
+});
 
 after(function(done) {
   mongoose.connection.db.dropDatabase(function() {
@@ -47,7 +44,7 @@ describe('Test sign-in', function() {
         .post('/api/UserProfiles/login')
         .send(loginParams)
         .end((err, res) => {
-          expect(err).to.not.exist;
+          expect(err).to.not.exist();
           expect(res).to.have.status(200);
           expect(res.body.token).to.not.be.a('null');
           done();
@@ -67,4 +64,3 @@ describe('Test sign-in', function() {
         });
   });
 });
-*/

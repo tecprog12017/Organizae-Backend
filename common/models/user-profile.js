@@ -14,6 +14,9 @@ module.exports = function(UserProfile) {
     //Used to cryptograph the password of the user, to ensure security
     if (passwordRegex.test(user.password)) {
       user.password = cryptoJS.AES.encrypt(user.password, secret);
+    } else {
+      //Drops the server
+      assert(false);
     }
 
     //Used to store the user registration on the database
@@ -72,9 +75,8 @@ module.exports = function(UserProfile) {
       if (foundUser != null) {
         UserProfile.remove({'email': user.email});
         callback(null, 200);
-      }
-      //Returns a status that signals that there was an error found in the requisition
-      else {
+      } else {
+        //Returns a status that signals that there was an error found in the requisition
         callback(null, 400);
       }
     });
