@@ -44,7 +44,8 @@
       "required": false
     },
     "cpf": {
-      "type": "string"
+      "type": "Cpf",
+      "required": false
     }
   },
   "validations": [],
