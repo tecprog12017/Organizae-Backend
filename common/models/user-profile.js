@@ -55,7 +55,7 @@ module.exports = function(UserProfile) {
           var password = bytes.toString(cryptoJS.enc.Utf8);
           //Used to return a confirmation of sucessful access to the system
           if (user.password == password) {
-            obj.unsetAttribute('password');
+            foundUser.unsetAttribute('password');
             let token = jwt.encode(foundUser, secret);
             callback(null, token);
           } else {
