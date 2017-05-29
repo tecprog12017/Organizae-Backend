@@ -40,7 +40,7 @@ describe('Test sign-in', function() {
         .post('/api/UserProfiles/login')
         .send(loginParams)
         .end((err, res) => {
-          expect(err).to.not.exist;
+          expect(err).to.not.exist();
           expect(res).to.have.status(200);
           expect(res.body.token).to.not.be.a('null');
           done();
