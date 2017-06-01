@@ -11,50 +11,42 @@ chai.use(chaiHttp);
 const newUser = {
   firstName: 'Matheus',
   lastName: 'Juju',
-  email: "matheuss@gmail.com",
-  password: "Test1234"
-}
+  email: 'matheuss@gmail.com',
+  password: 'Test1234'};
 
 //Correct enterprise model used for tests expecting 200 response
 const correctEnterprise = {
   name: 'Corporação Koiba',
   cnpj: '8459527',
-  occupationArea: "Childrens Card Game",
+  occupationArea: 'Childrens Card Game',
   adress: {
     number: 70677122,
     city: 'Domino',
     state: 'Anime',
-    number: 202
-  },
+    number: 202},
   owner: {
     firstName: 'Matheus',
     lastName: 'Juju',
-    email: "matheuss@gmail.com"
-  }
-}
+    email: 'matheuss@gmail.com'}};
 
 //Nonexistent enterprise model used for tests expecting 400 response
 const incorrectEnterprise = {
   name: 'Corporação Kaiba',
-  cnpj: '84595217',
   occupationArea: "Children's Card Game",
   adress: {
     number: 70675122,
     city: 'Domino City',
     state: 'Anime World',
-    number: 201
-  },
+    cnpj: '84595217',
+    number: 201},
   owner: {
     firstName: 'Seto',
     lastName: 'Kaiba',
-    email: "dragobranco@gmail.com",
-    password: 'Yugiloser123'
-  }
-}
+    email: 'dragobranco@gmail.com',
+    password: 'Yugiloser123'}};
 
 //Tests checking the enterprise models
 describe('Enterprise Tests', function() {
-
   //Creating the user that will be the owner of the enterprises on the test database
   //before the each test begins
   before(function(done) {
@@ -67,7 +59,7 @@ describe('Enterprise Tests', function() {
   });
 
   //Deleting all the created objects by the tests on the database
-  after(function (done) {
+  after(function(done) {
     chai.request(server)
       .post('/api/UserProfiles/delete-user')
       .send(newUser)
@@ -77,7 +69,7 @@ describe('Enterprise Tests', function() {
   });
 
   //Testing reponse provided by post http request used to register an enterprise
-  it('should register an enterprise', function (done) {
+  it('should register an enterprise', function(done) {
     chai.request(server)
       .post('/api/enterprises/register-enterprise')
       .send(correctEnterprise)
@@ -88,7 +80,7 @@ describe('Enterprise Tests', function() {
   });
 
   //Testing response provided by post http request used to register an enterprise
-  it('should not register an enterprise', function (done) {
+  it('should not register an enterprise', function(done) {
     chai.request(server)
     .post('/api/enterprises/register-enterprise')
     .send(incorrectEnterprise)
@@ -99,7 +91,7 @@ describe('Enterprise Tests', function() {
   });
 
   //Testing response provided by post http request used to delete an enterprise
-  it('should delete an enterprise', function (done) {
+  it('should delete an enterprise', function(done) {
     chai.request(server)
       .post('/api/enterprises/delete-enterprise')
       .send(correctEnterprise)
@@ -110,7 +102,7 @@ describe('Enterprise Tests', function() {
   });
 
   //Testing response provided by post http request used to delete an enterprise
-  it('should not delete an enterprise', function (done) {
+  it('should not delete an enterprise', function(done) {
     chai.request(server)
       .post('/api/enterprises/delete-enterprise')
       .send(incorrectEnterprise)
@@ -119,5 +111,4 @@ describe('Enterprise Tests', function() {
         done();
       });
   });
-
 });
