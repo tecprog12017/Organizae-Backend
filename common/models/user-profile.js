@@ -48,7 +48,7 @@ module.exports = function(UserProfile) {
   //Used to authenticate the user's access to the system
   UserProfile.LogIn = function(user, callback) {
     UserProfile.findOne({where: {'email': user.email}}, function(err, obj) {
-      if (user.email == obj.email) {
+      if (obj != null) {
         var bytes = cryptoJS.AES.decrypt(obj.password.toString(), secret);
         var password = bytes.toString(cryptoJS.enc.Utf8);
 
