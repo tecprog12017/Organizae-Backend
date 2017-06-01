@@ -16,7 +16,7 @@ module.exports = function(Enterprise) {
     else{
       assert(false);
     }
-    
+
     //Referencing User Profile model
     var UserProfile = app.models.UserProfile;
 
@@ -82,6 +82,26 @@ module.exports = function(Enterprise) {
       }
     });
   };
+
+  //Method used to list all enterprises that belong to an user
+  Enterprise.Consult = function(user, callback) {
+    Enterprise.find({where: {"owner": user}}, function(err, obj) {
+      if (obj != null) {
+        //There are enterprises registered to logged user
+        callback(null, obj);
+      }
+      else {
+        callback(null, 400);
+      }
+    });
+  };
+
+  Enterprise.remoteMethod('Consult', {
+    http: {path: '/consult-enterprises', verb: 'get'},
+    accepts: {arg: 'user', type: 'string',
+              required: true},
+    returns: {arg: 'query', type: 'Object'}
+  });
 
   Enterprise.remoteMethod('Delete', {
     http: {path: '/delete-enterprise', verb: 'post'},
