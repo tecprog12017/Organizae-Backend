@@ -1,4 +1,3 @@
-'use strict';
 //Importing references to all the other models
 var app = require('../../server/server');
 var assert = require('assert');
@@ -11,12 +10,11 @@ module.exports = function(Enterprise) {
     //Used to check if the enterprise object was passed correctly from the client side
     if (enterprise != null) {
       //Does nothing
-    }
-    //Drops the server
-    else{
+    } else {
+      //Drops the server
       assert(false);
-    }
-    
+    };
+
     //Referencing User Profile model
     var UserProfile = app.models.UserProfile;
 
@@ -28,15 +26,13 @@ module.exports = function(Enterprise) {
           //Return Success if the enterprise is not registered on the system
           if (!err) {
             callback(null, 200);
-          }
-          //Return an error if the enterprise is already registered on the system
-          else {
+          } else {
+            //Return an error if the enterprise is already registered on the system
             callback(null, 400);
           }
         });
-      }
-      //Return an error if the user is not registered on the system
-      else {
+      } else {
+        //Return an error if the user is not registered on the system
         callback(null, 400);
       }
     });
@@ -46,38 +42,33 @@ module.exports = function(Enterprise) {
     http: {path: '/register-enterprise', verb: 'post'},
     accepts: {arg: 'enterprise', type: 'Object',
               required: true, http: {source: 'body'}},
-    returns: {arg: 'status', type: 'string'}
-  });
+    returns: {arg: 'status', type: 'string'}});
 
   Enterprise.Delete = function(enterprise, callback) {
-
     //Used to check if the enterprise object was passed correctly from the client side
     if (enterprise != null) {
       //Does nothing
-    }
-    //Drops the server
-    else{
+    } else {
+      //Drops the server
       assert(false);
     }
 
     //Finds the enterprise that will be deleted
-    Enterprise.findOne({where: {'cnpj': enterprise.cnpj}}, function (err, foundEnterprise){
+    Enterprise.findOne({where: {'cnpj': enterprise.cnpj}}, function(err, foundEnterprise) {
       //Runs normally
-      if(foundEnterprise != null){
-        Enterprise.remove({'cnpj': enterprise.cnpj}, function(err, obj){
+      if (foundEnterprise != null) {
+        Enterprise.remove({'cnpj': enterprise.cnpj}, function(err, obj) {
           //Returns a status showing that the enterprise was deleted sucessfully
-          if(!err) {
+          if (!err) {
             callback(null, 200);
-          }
+          } else {
           //Returns a status showing that there was an error occurred on the http request
-          else {
             console.error(err);
             callback(null, 400);
           }
         });
-      }
-      //Returns a status showing that an error ocurred in the request
-      else {
+      } else {
+        //Returns a status showing that an error ocurred in the request
         callback(null, 400);
       }
     });
@@ -87,7 +78,5 @@ module.exports = function(Enterprise) {
     http: {path: '/delete-enterprise', verb: 'post'},
     accepts: {arg: 'enterprise', type: 'Object',
               required: true, http: {source: 'body'}},
-    returns: {arg: 'status', type: 'string'}
-  });
-
+    returns: {arg: 'status', type: 'string'}});
 };
