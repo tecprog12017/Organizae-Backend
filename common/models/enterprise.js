@@ -54,15 +54,15 @@ module.exports = function(Enterprise) {
       assert(false);
     }
 
-    Enterprise.findOne({where: {'cnpj': editedEnterprise.oldCnpj}}, function(err, obj){
+    Enterprise.findOne({where: {'cnpj': editedEnterprise.oldCnpj}}, function(err, obj) {
       //Runs normally if the enteprise is found
       if (obj != null) {
-        delete editedEnterprise.oldCnpj
+        delete editedEnterprise.oldCnpj;
         delete editedEnterprise.confirmationPassword;
         //Upserts the found object on the database with new information
-        Enterprise.update({'cnpj': obj.cnpj}, editedEnterprise, function(err, response){
+        Enterprise.update({'cnpj': obj.cnpj}, editedEnterprise, function(err, response) {
           //Returns a successfull status to the user
-          if(!err) {
+          if (!err) {
             callback(null, 200);
           } else {
             //Returns an error status to the user
