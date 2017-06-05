@@ -22,6 +22,7 @@ module.exports = function(Enterprise) {
     UserProfile.findOne({where: {'email': enterprise.owner.email}}, function(err, obj) {
       if (obj != null) {
         //Used to check the registration on the enterprise on the system
+        delete enterprise.oldCnpj;
         Enterprise.upsert(enterprise, function(err, obj) {
           //Return Success if the enterprise is not registered on the system
           if (!err) {
@@ -42,6 +43,43 @@ module.exports = function(Enterprise) {
     http: {path: '/register-enterprise', verb: 'post'},
     accepts: {arg: 'enterprise', type: 'Object',
               required: true, http: {source: 'body'}},
+    returns: {arg: 'status', type: 'string'}});
+
+  Enterprise.Edit = function(editedEnterprise, callback) {
+    //Checks if the method can run with the passed object and drops otherwise
+    if (editedEnterprise != null) {
+      //Does nothing
+    } else {
+      //Runs normally
+      assert(false);
+    }
+
+    Enterprise.findOne({where: {'cnpj': editedEnterprise.oldCnpj}}, function(err, obj){
+      //Runs normally if the enteprise is found
+      if (obj != null) {
+        delete editedEnterprise.oldCnpj
+        delete editedEnterprise.confirmationPassword;
+        //Upserts the found object on the database with new information
+        Enterprise.update({'cnpj': obj.cnpj}, editedEnterprise, function(err, response){
+          //Returns a successfull status to the user
+          if(!err) {
+            callback(null, 200);
+          } else {
+            //Returns an error status to the user
+            callback(null, 400);
+          }
+        });
+      } else {
+        //Returns an error status to the user
+        callback(null, 400);
+      }
+    });
+  };
+
+  Enterprise.remoteMethod('Edit', {
+    http: {path: '/edit-enterprise', verb: 'post'},
+    accepts: {arg: 'editedEnterprise', type: 'Object',
+    required: true, http: {source: 'body'}},
     returns: {arg: 'status', type: 'string'}});
 
   Enterprise.Delete = function(enterprise, callback) {
