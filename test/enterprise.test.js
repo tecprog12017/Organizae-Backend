@@ -71,7 +71,7 @@ describe('Enterprise Tests', function() {
   //Testing reponse provided by post http request used to register an enterprise
   it('should register an enterprise', function(done) {
     chai.request(server)
-      .post('/api/enterprises/register-enterprise')
+    .post('/api/enterprises/register-enterprise')
       .send(correctEnterprise)
       .end((err, res) => {
         expect(res.body['status']).to.equal(200);
@@ -99,6 +99,17 @@ describe('Enterprise Tests', function() {
         expect(res.body['status']).to.equal(200);
         done();
       });
+  });
+
+  //Testing response provided by get http request used to consult user enterprises
+  it('should return code 400 when consulting user enterprises', function(done) {
+    chai.request(server)
+  .get('/api/enterprises/consult-enterprises')
+  .query({user: 'matheuss@gmail.com'})
+    .end(function(err, res) {
+      expect(res).to.have.status(400);
+      done();
+    });
   });
 
   //Testing response provided by post http request used to delete an enterprise

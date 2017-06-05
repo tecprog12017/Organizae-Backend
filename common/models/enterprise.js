@@ -1,6 +1,7 @@
 //Importing references to all the other models
 var app = require('../../server/server');
 var assert = require('assert');
+var consts = require('./constants.js');
 
 module.exports = function(Enterprise) {
   Enterprise.validatesUniquenessOf('cnpj');
@@ -73,6 +74,27 @@ module.exports = function(Enterprise) {
       }
     });
   };
+
+  //Method used to list all enterprises that belong to an user
+  Enterprise.Consult = function(user, callback) {
+    Enterprise.find({where: {'owner': user}}, function(err, obj) {
+      if (obj[0] != null) {
+        //There are enterprises registered to logged user, return them
+        callback(null, obj);
+      } else {
+        // creating error to send to as response, no enterprises found
+        var error = new Error('This user has no enterprises!');
+        error.status = consts.ERRORCODE;
+        callback(error, consts.ERRORCODE);
+      }
+    });
+  };
+
+  Enterprise.remoteMethod('Consult', {
+    http: {path: '/consult-enterprises', verb: 'get'},
+    accepts: {arg: 'user', type: 'string',
+              required: true},
+    returns: {arg: 'query', type: 'Object'}});
 
   Enterprise.remoteMethod('Delete', {
     http: {path: '/delete-enterprise', verb: 'post'},
