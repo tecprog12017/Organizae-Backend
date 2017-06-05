@@ -1,6 +1,7 @@
 //Importing references to all the other models
 var app = require('../../server/server');
 var assert = require('assert');
+var consts = require('./constants.js');
 
 module.exports = function(Enterprise) {
   Enterprise.validatesUniquenessOf('cnpj');
@@ -13,7 +14,7 @@ module.exports = function(Enterprise) {
     } else {
       //Drops the server
       assert(false);
-    }
+    };
 
     //Referencing User Profile model
     var UserProfile = app.models.UserProfile;
@@ -22,6 +23,7 @@ module.exports = function(Enterprise) {
     UserProfile.findOne({where: {'email': enterprise.owner.email}}, function(err, obj) {
       if (obj != null) {
         //Used to check the registration on the enterprise on the system
+        delete enterprise.oldCnpj;
         Enterprise.upsert(enterprise, function(err, obj) {
           //Return Success if the enterprise is not registered on the system
           if (!err) {
@@ -42,8 +44,44 @@ module.exports = function(Enterprise) {
     http: {path: '/register-enterprise', verb: 'post'},
     accepts: {arg: 'enterprise', type: 'Object',
               required: true, http: {source: 'body'}},
-    returns: {arg: 'status', type: 'string'},
-  });
+    returns: {arg: 'status', type: 'string'}});
+
+  Enterprise.Edit = function(editedEnterprise, callback) {
+    //Checks if the method can run with the passed object and drops otherwise
+    if (editedEnterprise != null) {
+      //Does nothing
+    } else {
+      //Runs normally
+      assert(false);
+    }
+
+    Enterprise.findOne({where: {'cnpj': editedEnterprise.oldCnpj}}, function(err, obj) {
+      //Runs normally if the enteprise is found
+      if (obj != null) {
+        delete editedEnterprise.oldCnpj;
+        delete editedEnterprise.confirmationPassword;
+        //Upserts the found object on the database with new information
+        Enterprise.update({'cnpj': obj.cnpj}, editedEnterprise, function(err, response) {
+          //Returns a successfull status to the user
+          if (!err) {
+            callback(null, 200);
+          } else {
+            //Returns an error status to the user
+            callback(null, 400);
+          }
+        });
+      } else {
+        //Returns an error status to the user
+        callback(null, 400);
+      }
+    });
+  };
+
+  Enterprise.remoteMethod('Edit', {
+    http: {path: '/edit-enterprise', verb: 'post'},
+    accepts: {arg: 'editedEnterprise', type: 'Object',
+    required: true, http: {source: 'body'}},
+    returns: {arg: 'status', type: 'string'}});
 
   Enterprise.Delete = function(enterprise, callback) {
     //Used to check if the enterprise object was passed correctly from the client side
@@ -63,7 +101,7 @@ module.exports = function(Enterprise) {
           if (!err) {
             callback(null, 200);
           } else {
-            //Returns a status showing that there was an error occurred on the http request
+          //Returns a status showing that there was an error occurred on the http request
             console.error(err);
             callback(null, 400);
           }
@@ -75,10 +113,30 @@ module.exports = function(Enterprise) {
     });
   };
 
+  //Method used to list all enterprises that belong to an user
+  Enterprise.Consult = function(user, callback) {
+    Enterprise.find({where: {'owner': user}}, function(err, obj) {
+      if (obj[0] != null) {
+        //There are enterprises registered to logged user, return them
+        callback(null, obj);
+      } else {
+        // creating error to send to as response, no enterprises found
+        var error = new Error('This user has no enterprises!');
+        error.status = consts.ERRORCODE;
+        callback(error, consts.ERRORCODE);
+      }
+    });
+  };
+
+  Enterprise.remoteMethod('Consult', {
+    http: {path: '/consult-enterprises', verb: 'get'},
+    accepts: {arg: 'user', type: 'string',
+              required: true},
+    returns: {arg: 'query', type: 'Object'}});
+
   Enterprise.remoteMethod('Delete', {
     http: {path: '/delete-enterprise', verb: 'post'},
     accepts: {arg: 'enterprise', type: 'Object',
               required: true, http: {source: 'body'}},
-    returns: {arg: 'status', type: 'string'},
-  });
+    returns: {arg: 'status', type: 'string'}});
 };
