@@ -12,7 +12,8 @@ const newUser = {
   firstName: 'Matheus',
   lastName: 'Juju',
   email: 'matheuss@gmail.com',
-  password: 'Test1234'};
+  password: 'Test1234',
+};
 
 //Correct enterprise model used for tests expecting 200 response
 const correctEnterprise = {
