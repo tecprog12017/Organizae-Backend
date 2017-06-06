@@ -1,25 +1,26 @@
-/*var expect = require('chai').expect;
-var chai = require('chai');
-var chaiHttp  = require('chai-http');
-var server = 'http://localhost:3000';
-var UserProfile = require('../common/models/user-profile');
-var Schema = require('mongoose').Schema;
+const expect = require('chai').expect;
+const chai = require('chai');
+const chaiHttp  = require('chai-http');
+const server = 'http://localhost:3000';
+const UserProfile = require('../common/models/user-profile');
+const Schema = require('mongoose').Schema;
+const secret = 'tecprog-2017/01';
 
 const mongoose = require('mongoose');
 
 chai.use(chaiHttp);
 
 // Creates user to be registered
-var user = {firstName: 'Jesus',
+const user = {firstName: 'Jesus',
             lastName: 'Cristo',
             email: 'jesuscristo@gmail.com',
             password: 'Teste123'};
 
 // Creates Schema to be queried on database
-var userProfileSchema = new Schema({email: 'string'});
+const userProfileSchema = new Schema({email: 'string'});
 
 // Creates model based on schema to be queried on database
-var userProfile = mongoose.model('UserProfile', userProfileSchema);
+const userProfile = mongoose.model('UserProfile', userProfileSchema);
 
 before(function(done) {
   // Connects to database
@@ -55,10 +56,8 @@ describe('Test delete', function() {
         .post('/api/UserProfiles/delete-user')
         .send(user)
         .end((err, res) => {
-          expect(err).to.not.exist();
-          console.log(res);
-          expect(res.body.status).to.equal(200);
-          expect(res.body.token).to.not.exist();
+          console.log(res.body);
+          expect(res.body['status']).to.equal(200);
 
           // Checks whether or not the user was deleted
           userProfile.findOne({where: {'email': user.email}}, function(err, userProfile) {
@@ -82,9 +81,7 @@ describe('Test delete', function() {
         .post('/api/UserProfiles/delete-user')
         .send(fakeUser)
         .end((err, res) => {
-          expect(err).to.not.exist();
           expect(res.body.status).to.equal(400);
-          expect(res.body.token).to.not.exist();
 
           // Confirms that unregistered user is not in the database
           userProfile.findOne({where: {'email': user.email}}, function(err, userProfile) {
@@ -96,4 +93,3 @@ describe('Test delete', function() {
         });
   });
 });
-*/

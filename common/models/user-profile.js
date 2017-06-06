@@ -72,7 +72,7 @@ module.exports = function(UserProfile) {
         callback(null, 400);
       }
     });
-};
+  };
 
   //Used for the submission of the access of the user on the system
   UserProfile.remoteMethod('LogIn', {
@@ -184,17 +184,14 @@ module.exports = function(UserProfile) {
 
   //Used to delete user's account in the system
   UserProfile.DeleteUserProfile = function(user, callback) {
-    UserProfile.findOne({where: {'email': user.token.email}}, function(err, foundUser) {
+    UserProfile.findOne({where: {'email': user.email}}, function(err, foundUser) {
       //Returns a status that signals that the requisition was done sucessfully
       if (foundUser != null) {
         // Decrypt found user's password
         var bytesFoundUser = cryptoJS.AES.decrypt(foundUser.password.toString(), secret);
         var foundUserPassword = bytesFoundUser.toString(cryptoJS.enc.Utf8);
-        // Decrypt typed password
-        var bytesPassword = cryptoJS.AES.decrypt(user.password.toString(), secret);
-        var userPassword = bytesPassword.toString(cryptoJS.enc.Utf8);
         // Compare found user password to the one typed on the delete form
-        if (foundUserPassword == userPassword){
+        if (foundUserPassword == user.password) {
           UserProfile.remove({'email': user.email});
           callback(null, 200);
         } else {
