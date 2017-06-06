@@ -63,23 +63,23 @@ module.exports = function(UserProfile) {
             //If user's password is different than the found user's one return error
             callback(null, 400);
           }
+        } else {
+          //If user's email is different than the found user's one return error
+          callback(null, 400);
         }
       } else {
         //If found user is undefined, ie it could not be found, return error
         callback(null, 400);
       }
     });
-  };
+};
 
   //Used for the submission of the access of the user on the system
   UserProfile.remoteMethod('LogIn', {
     http: {path: '/login', verb: 'post'},
     accepts: {arg: 'user', type: 'Object',
               required: true, http: {source: 'body'}},
-    returns: [
-              {arg: 'status', type: 'string'},
-              {root: true, type: 'Object'},
-    ],
+    returns: {root: true, type: 'Object'},
   });
 
   //Used to assign user personal data to it's profile

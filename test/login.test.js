@@ -17,9 +17,10 @@ before(function(done) {
       .post('/api/UserProfiles/sign-up')
       .send(user)
       .end((err, res) => {
-        expect(res.body['status']).to.equal(200);
-        done();
+        expect(res).to.have.status(200);
       });
+
+  done();
 });
 
 after(function(done) {
@@ -32,6 +33,7 @@ after(function(done) {
 });
 
 describe('Test sign-in', function() {
+  // test with user sign-up and all fields correct
   it('should sign-in', function(done) {
     var loginParams = {email: user['email'],
                       password: user['password']};
@@ -39,14 +41,13 @@ describe('Test sign-in', function() {
         .post('/api/UserProfiles/login')
         .send(loginParams)
         .end((err, res) => {
-          expect(err).to.not.exist();
           expect(res).to.have.status(200);
           expect(res.body.token).to.not.be.a('null');
           done();
         });
   });
 
-  it('should not sign-in', function(done) {
+  it('user is not sign-up', function(done) {
     var loginParams = {email: 'test@test.com',
                       password: 'Test456'};
 
@@ -55,7 +56,19 @@ describe('Test sign-in', function() {
         .send(loginParams)
         .end((err, res) => {
           expect(res.body.token).to.be.a('undefined');
-          expect(res.body['status']).to.equal(400);
+          done();
+        });
+  });
+
+  it('password is not correct', function(done) {
+    var loginParams = {email: user['email'],
+                      password: 'Test4567'};
+
+    chai.request(server)
+        .post('/api/UserProfiles/login')
+        .send(loginParams)
+        .end((err, res) => {
+          expect(res.body.token).to.be.a('undefined');
           done();
         });
   });
