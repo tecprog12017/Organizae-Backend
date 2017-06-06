@@ -40,7 +40,7 @@ const incorrectEnterprise = {
     state: 'Anime World',
     cnpj: '84595217',
     number: 201},
-    owner: {
+  owner: {
     firstName: 'Seto',
     lastName: 'Kaiba',
     email: 'dragobranco@gmail.com',

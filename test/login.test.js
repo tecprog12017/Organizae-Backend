@@ -67,7 +67,7 @@ describe('Test sign-in', function() {
     chai.request(server)
         .post('/api/UserProfiles/login')
         .send(loginParams)
-        .end((err,res) => {
+        .end((err, res) => {
           expect(res.body.token).to.be.a('undefined');
           done();
         });
