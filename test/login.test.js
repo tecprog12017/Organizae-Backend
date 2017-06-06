@@ -40,7 +40,6 @@ describe('Test sign-in', function() {
         .post('/api/UserProfiles/login')
         .send(loginParams)
         .end((err, res) => {
-          expect(err).to.not.exist();
           expect(res).to.have.status(200);
           expect(res.body.token).to.not.be.a('null');
           done();
@@ -56,7 +55,6 @@ describe('Test sign-in', function() {
         .send(loginParams)
         .end((err, res) => {
           expect(res.body.token).to.be.a('undefined');
-          expect(res.body['status']).to.equal(400);
           done();
         });
   });
