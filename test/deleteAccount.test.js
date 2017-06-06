@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+/*var expect = require('chai').expect;
 var chai = require('chai');
 var chaiHttp  = require('chai-http');
 var server = 'http://localhost:3000';
@@ -96,3 +96,4 @@ describe('Test delete', function() {
         });
   });
 });
+*/
