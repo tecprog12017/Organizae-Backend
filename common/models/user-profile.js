@@ -79,7 +79,10 @@ module.exports = function(UserProfile) {
     http: {path: '/login', verb: 'post'},
     accepts: {arg: 'user', type: 'Object',
               required: true, http: {source: 'body'}},
-    returns: {root: true, type: 'Object'},
+    returns: [
+              {arg: 'status', type: 'string'},
+              {root: true, type: 'Object'},
+    ],
   });
 
   //Used to assign user personal data to it's profile
