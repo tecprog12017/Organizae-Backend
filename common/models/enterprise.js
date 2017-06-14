@@ -192,7 +192,7 @@ module.exports = function(Enterprise) {
 
       //Run all the vector verify that is no other employee email equal
       for (var currentPosition = 0; currentPosition < employeesResult.length; currentPosition++) {
-        for (var nextPosition = currentPosition+1; j < employeesResult.length; nextPosition++) {
+        for (var nextPosition = currentPosition+1; nextPosition < employeesResult.length; nextPosition++) {
           if (employeesResult[currentPosition] === employeesResult[nextPosition]){
               employeesResult.splice(nextPosition--, 1);
           }

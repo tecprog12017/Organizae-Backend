@@ -214,13 +214,12 @@ module.exports = function(UserProfile) {
   //Used to perform the query which get all user profile on the system
   UserProfile.remoteMethod('FindAllUserProfiles', {
     http: {path: '/find-users', verb: 'get'},
-    returns: {arg: 'usersProfiles', type: 'Object'},
+    returns: {arg: 'userProfiles', type: 'Object'},
   });
 
 
   //Method used to assign one or more enterprise to an user
   UserProfile.AddEnterprise = function(enterprise, users, callback) {
-
     //Used to check if the enterprises and users object was passed correctly from the client side
     if (enterprise != null && users != null) {
       //Does nothing
