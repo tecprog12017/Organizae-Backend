@@ -144,8 +144,6 @@ module.exports = function(Enterprise) {
 
     //Method used to assign one or more user to an enterprise on the database
     Enterprise.AddEmployee = function(enterprise, users, callback) {
-      console.log("enterprise", enterprise);
-      console.log("users", users.employees);
 
       //Used to check if the enterprise and users object was passed correctly from the client side
       if (enterprise != null && users != null) {
@@ -179,9 +177,12 @@ module.exports = function(Enterprise) {
       });
     };
 
+    //This method generate a single vector if all employees of an enterprise,
+    // making sure that isn't a duplicate employee email
     uniqueEmployeeByEnterprise = function(oldEmployees, newEmployees){
       var employeesResult = [];
 
+      //Check if there is something already in database
       if (oldEmployees != null) {
         employeesResult = oldEmployees.concat(newEmployees);
       }
@@ -189,10 +190,11 @@ module.exports = function(Enterprise) {
         employeesResult = newEmployees;
       }
 
-      for (var i = 0; i < employeesResult.length; i++) {
-        for (var j = i+1; j < employeesResult.length; j++) {
-          if (employeesResult[i] === employeesResult[j]){
-              employeesResult.splice(j--, 1);
+      //Run all the vector verify that is no other employee email equal
+      for (var currentPosition = 0; currentPosition < employeesResult.length; currentPosition++) {
+        for (var nextPosition = currentPosition+1; j < employeesResult.length; nextPosition++) {
+          if (employeesResult[currentPosition] === employeesResult[nextPosition]){
+              employeesResult.splice(nextPosition--, 1);
           }
         }
       }
