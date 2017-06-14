@@ -195,4 +195,25 @@ module.exports = function(UserProfile) {
               required: true, http: {source: 'body'}},
     returns: {arg: 'status', type: 'string'},
   });
+
+
+
+  //Used to find all users account in the system
+  UserProfile.FindAllUserProfiles = function(callback) {
+    UserProfile.find({order: 'first ASC', fields: {firstName: true, lastName: true, email: true}}, function(err, usersProfiles) {
+      //Returns all user profile found this signs that the requisition was done sucessfully
+      if (usersProfiles != null) {
+        callback(null, usersProfiles);
+      } else {
+        //Returns null signs that there is nothing to return
+        callback(null, null);
+      }
+    });
+  };
+
+  //Used to perform the query which get all user profile on the system
+  UserProfile.remoteMethod('FindAllUserProfiles', {
+    http: {path: '/find-users', verb: 'get'},
+    returns: {arg: 'usersProfiles', type: 'Object'},
+  });
 };
