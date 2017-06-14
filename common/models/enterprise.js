@@ -139,4 +139,70 @@ module.exports = function(Enterprise) {
     accepts: {arg: 'enterprise', type: 'Object',
               required: true, http: {source: 'body'}},
     returns: {arg: 'status', type: 'string'}});
+
+
+
+    //Method used to assign one or more user to an enterprise on the database
+    Enterprise.AddEmployee = function(enterprise, users, callback) {
+      console.log("enterprise", enterprise);
+      console.log("users", users.employees);
+
+      //Used to check if the enterprise and users object was passed correctly from the client side
+      if (enterprise != null && users != null) {
+        //Does nothing
+      } else {
+        //Drops the server
+        assert(false);
+      };
+
+
+      //Here finds the enterprise by checking the email of ower and the enterprise name
+      Enterprise.findOne({where: {'owner': enterprise.owner.email, 'name': enterprise.name}}, function(err, obj) {
+        if (obj != null) {
+          //
+          var allEmployees = [];
+          var allEmployees = uniqueEmployeeByEnterprise(obj.employees, users.employees);
+
+          obj.updateAttributes({employees: allEmployees}, function(err, obj) {
+            //Return Success if can add users to enterprise
+            if (!err) {
+              callback(null, 200);
+            } else {
+              //Return an error
+              callback(null, 400);
+            }
+          });
+        } else {
+          //Return an error if the given enterprise not registered on the system
+          callback(null, 400);
+        }
+      });
+    };
+
+    uniqueEmployeeByEnterprise = function(oldEmployees, newEmployees){
+      var employeesResult = [];
+
+      if (oldEmployees != null) {
+        employeesResult = oldEmployees.concat(newEmployees);
+      }
+      else{
+        employeesResult = newEmployees;
+      }
+
+      for (var i = 0; i < employeesResult.length; i++) {
+        for (var j = i+1; j < employeesResult.length; j++) {
+          if (employeesResult[i] === employeesResult[j]){
+              employeesResult.splice(j--, 1);
+          }
+        }
+      }
+
+      return employeesResult;
+    }
+
+    Enterprise.remoteMethod('AddEmployee', {
+      http: {path: '/add-employee', verb: 'post'},
+      accepts: [{arg: 'enterprise', type: 'Object', required: true},
+                {arg: 'users', type: 'Object', required: true}],
+      returns: {arg: 'status', type: 'string'}});
 };
