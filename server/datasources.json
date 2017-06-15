@@ -10,7 +10,7 @@
     "host": "localhost",
     "port": 27017,
     "database": "testOrganizae",
-    "name": "testOrganizae",
+    "name": "test",
     "connector": "mongodb"
   }
 }
