@@ -202,4 +202,31 @@ module.exports = function(Enterprise) {
     accepts: [{arg: 'enterprise', type: 'Object', required: true},
               {arg: 'users', type: 'Object', required: true}],
     returns: {arg: 'status', type: 'string'}});
+
+  //Method used by the get-employees remoteMethod
+  Enterprise.ListEmployees = function(enterprise, callback) {
+    if (enterprise != null) {
+      //Do nothing
+    } else {
+      //Drops the server
+      assert(false);
+    }
+
+    Enterprise.findOne({where: {'cnpj': enterprise.cnpj}}, function(err, obj) {
+      //Returns a list of the employees to the user
+      if(obj[0] != null || obj != null){
+        callback(null, obj.employees);
+      } else {
+        //Returns an error for the user
+        callback(null, 400);
+      }
+    });
+  };
+
+  //Remote method used to provide a means to get the employees on the database
+  Enterprise.remoteMethod('ListEmployees', {
+    http: {path:'/get-employees', verb: 'get'},
+    accepts: {arg: 'enterprise', type: 'Object', required: true,
+      http: {source: 'body'}},
+    returns: {arg: 'employees', type: 'Object'}});
 };
