@@ -214,7 +214,7 @@ module.exports = function(Enterprise) {
 
     Enterprise.findOne({where: {'cnpj': enterprise.cnpj}}, function(err, obj) {
       //Returns a list of the employees to the user
-      if(obj[0] != null || obj != null){
+      if (obj[0] != null || obj != null) {
         callback(null, obj.employees);
       } else {
         //Returns an error for the user
@@ -225,7 +225,7 @@ module.exports = function(Enterprise) {
 
   //Remote method used to provide a means to get the employees on the database
   Enterprise.remoteMethod('ListEmployees', {
-    http: {path:'/get-employees', verb: 'get'},
+    http: {path: '/get-employees', verb: 'get'},
     accepts: {arg: 'enterprise', type: 'Object', required: true,
       http: {source: 'body'}},
     returns: {arg: 'employees', type: 'Object'}});

@@ -6,7 +6,7 @@ module.exports = function(Group) {
   //Used by the remote method register-group
   Group.Register = function(newGroup, callback) {
     //Used to check if the passed group isn't null
-    if(newGroup != null) {
+    if (newGroup != null) {
       //Do nothing
     } else {
       //Drops the server
@@ -16,11 +16,11 @@ module.exports = function(Group) {
     const Enterprise = app.models.enterprise;
 
     Enterprise.findOne({where: {'cnpj': newGroup.enterprise_cnpj}}, function(err, obj) {
-      if(!err && obj != null){
+      if (!err && obj != null) {
         //Used to register the new group on the database
         Group.upsert(newGroup, function(err, obj) {
           //Returns a successfull status to the user
-          if(!err) {
+          if (!err) {
             callback(null, 200);
           } else {
             //Returns an error status to the user
@@ -38,6 +38,6 @@ module.exports = function(Group) {
   Group.remoteMethod('Register', {
     http: {path: '/register-group', verb: 'post'},
     accepts: {type: 'Object', arg: 'groups',
-      required: true, http: { source: 'body'}},
+      required: true, http: {source: 'body'}},
     returns: {arg: 'status', type: 'string'}});
 };
