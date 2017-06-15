@@ -46,6 +46,10 @@
     "cpf": {
       "type": "Cpf",
       "required": false
+    },
+    "enterprise": {
+      "type": "array",
+      "required": false
     }
   },
   "validations": [],

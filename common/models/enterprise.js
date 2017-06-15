@@ -139,4 +139,67 @@ module.exports = function(Enterprise) {
     accepts: {arg: 'enterprise', type: 'Object',
               required: true, http: {source: 'body'}},
     returns: {arg: 'status', type: 'string'}});
+
+    //Method used to assign one or more user to an enterprise on the database
+  Enterprise.AddEmployee = function(enterprise, users, callback) {
+    //Used to check if the enterprise and users object was passed correctly from the client side
+    if (enterprise != null && users != null) {
+      //Does nothing
+    } else {
+      //Drops the server
+      assert(false);
+    };
+
+    //Here finds the enterprise by checking the email of ower and the enterprise name
+    Enterprise.findOne({where: {'owner': enterprise.owner.email, 'name': enterprise.name}}, function(err, obj) {
+      if (obj != null) {
+        //
+        var allEmployees = [];
+        var allEmployees = uniqueEmployeeByEnterprise(obj.employees, users.employees);
+
+        obj.updateAttributes({employees: allEmployees}, function(err, obj) {
+          //Return Success if can add users to enterprise
+          if (!err) {
+            callback(null, 200);
+          } else {
+            //Return an error
+            callback(null, 400);
+          }
+        });
+      } else {
+        //Return an error if the given enterprise not registered on the system
+        callback(null, 400);
+      }
+    });
+  };
+
+  //This method generate a single vector if all employees of an enterprise,
+  // making sure that isn't a duplicate employee email
+  uniqueEmployeeByEnterprise = function(oldEmployees, newEmployees) {
+    var employeesResult = [];
+
+    //Check if there is something already in database
+    if (oldEmployees != null) {
+      employeesResult = oldEmployees.concat(newEmployees);
+    } else {
+      employeesResult = newEmployees;
+    }
+
+    //Run all the vector verify that is no other employee email equal
+    for (var currentPosition = 0; currentPosition < employeesResult.length; currentPosition++) {
+      for (var nextPosition = currentPosition + 1; nextPosition < employeesResult.length; nextPosition++) {
+        if (employeesResult[currentPosition] === employeesResult[nextPosition]) {
+          employeesResult.splice(nextPosition--, 1);
+        }
+      }
+    }
+
+    return employeesResult;
+  };
+
+  Enterprise.remoteMethod('AddEmployee', {
+    http: {path: '/add-employee', verb: 'post'},
+    accepts: [{arg: 'enterprise', type: 'Object', required: true},
+              {arg: 'users', type: 'Object', required: true}],
+    returns: {arg: 'status', type: 'string'}});
 };
