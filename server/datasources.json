@@ -1,6 +1,6 @@
 {
   "organizae": {
-    "host": "localhost",
+    "host": "172.31.52.16",
     "port": 27017,
     "database": "organizae",
     "name": "organizae",
