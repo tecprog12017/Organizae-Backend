@@ -1,6 +1,6 @@
 {
   "organizae": {
-    "host": "172.31.52.16",
+    "host": "process.env.OPENSHIFT_MONGODB_IP",
     "port": 27017,
     "database": "organizae",
     "name": "organizae",
