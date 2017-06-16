@@ -1,7 +1,7 @@
 {
   "organizae": {
-    "host": "process.env.OPENSHIFT_MONGODB_IP",
-    "port": 27017,
+    "host": "mongodb://$OPENSHIFT_MONGODB_DB_HOST",
+    "port": "$OPENSHIFT_MONGODB_DB_PORT",
     "database": "organizae",
     "name": "organizae",
     "connector": "mongodb"
