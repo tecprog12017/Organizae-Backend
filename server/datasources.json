@@ -1,10 +1,11 @@
 {
   "organizae": {
-    "host": "mongodb://$OPENSHIFT_MONGODB_DB_HOST",
-    "port": "$OPENSHIFT_MONGODB_DB_PORT",
-    "database": "organizae",
-    "name": "organizae",
-    "connector": "mongodb",
-    "lazyConnect": true
-  }
+        "mongodb": {
+            "host": "172.30.52.169",
+            "database": "organizae",
+            "username": "organizae",
+            "password": "tecprog2017",
+            "port": 27017,
+            "connector": "mongodb"
+        }
 }
