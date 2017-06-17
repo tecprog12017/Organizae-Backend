@@ -4,7 +4,8 @@
     "port": "$OPENSHIFT_MONGODB_DB_PORT",
     "database": "organizae",
     "name": "organizae",
-    "connector": "mongodb"
+    "connector": "mongodb",
+    "lazyConnect": true
   },
   "test": {
     "host": "localhost",
