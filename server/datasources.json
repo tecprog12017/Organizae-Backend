@@ -6,12 +6,5 @@
     "name": "organizae",
     "connector": "mongodb",
     "lazyConnect": true
-  },
-  "test": {
-    "host": "localhost",
-    "port": 27017,
-    "database": "testOrganizae",
-    "name": "testOrganizae",
-    "connector": "mongodb"
   }
 }
