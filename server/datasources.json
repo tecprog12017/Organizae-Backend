@@ -8,4 +8,5 @@
             "port": 27017,
             "connector": "mongodb"
         }
+  }
 }
