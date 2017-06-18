@@ -1,12 +1,10 @@
 {
   "organizae": {
-        "mongodb": {
-            "host": "172.30.52.169",
-            "database": "organizae",
-            "username": "organizae",
-            "password": "tecprog2017",
-            "port": 27017,
-            "connector": "mongodb"
-        }
+    "host": "172.30.52.169",
+    "database": "organizae",
+    "username": "organizae",
+    "password": "tecprog2017",
+    "port": 27017,
+    "connector": "mongodb"
   }
 }
