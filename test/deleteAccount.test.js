@@ -27,7 +27,7 @@ before(function(done) {
   const db = mongoose.connection;
   db.on('error', console.error.bind(console, 'connection error'));
   db.once('open', function() {
-    console.log('We are connected to test database!');
+    //do nothing
   });
 
   //Creates user in system's database by signing them up
@@ -52,19 +52,18 @@ describe('Test delete', function() {
   it('should delete account with sucess', function(done) {
     //Sends request to delete user's account
     chai.request(server)
-        .post('/api/UserProfiles/delete')
+        .post('/api/UserProfiles/delete-user')
         .send(user)
         .end((err, res) => {
-          expect(err).to.not.exist;
-          console.log(res.body.status);
+          expect(err).to.not.exist();
+          console.log(res);
           expect(res.body.status).to.equal(200);
-
-          expect(res.body.token).to.not.exist;
+          expect(res.body.token).to.not.exist();
 
           // Checks whether or not the user was deleted
           userProfile.findOne({where: {'email': user.email}}, function(err, userProfile) {
-            expect(userProfile).to.not.exist;
-            expect(err).to.exist;
+            expect(userProfile).to.not.exist();
+            expect(err).to.exist();
           });
 
           done();
@@ -80,17 +79,17 @@ describe('Test delete', function() {
 
     // Sends request to try to delete unregistered user
     chai.request(server)
-        .post('/api/UserProfiles/delete')
+        .post('/api/UserProfiles/delete-user')
         .send(fakeUser)
         .end((err, res) => {
-          expect(err).to.not.exist;
+          expect(err).to.not.exist();
           expect(res.body.status).to.equal(400);
-          expect(res.body.token).to.not.exist;
+          expect(res.body.token).to.not.exist();
 
           // Confirms that unregistered user is not in the database
           userProfile.findOne({where: {'email': user.email}}, function(err, userProfile) {
-            expect(userProfile).to.not.exist;
-            expect(err).to.exist;
+            expect(userProfile).to.not.exist();
+            expect(err).to.exist();
           });
 
           done();
