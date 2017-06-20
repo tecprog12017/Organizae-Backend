@@ -1,4 +1,5 @@
 module.exports = {
+  console.log(process.env.OPENSHIFT_MONGODB_DB_HOST);
   db: {
     connector: 'mongodb',
     hostname: process.env.OPENSHIFT_MONGODB_DB_HOST,
