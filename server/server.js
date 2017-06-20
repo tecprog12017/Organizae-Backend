@@ -1,12 +1,13 @@
-
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
 var app = module.exports = loopback();
+var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
+var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 app.start = function() {
   // start the web server
-  return app.listen(function() {
+  return app.listen(port, ip, function() {
     app.emit('started');
     var baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', baseUrl);
