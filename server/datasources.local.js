@@ -9,4 +9,4 @@ module.exports = {
   }
 };
 
-console.log(process.env.OPENSHIFT_MONGODB_DB_HOST);
+console.log(process.env.OPENSHIFT_MONGODB_DATABASE);
