@@ -2,8 +2,8 @@ var loopback = require('loopback');
 var boot = require('loopback-boot');
 
 var app = module.exports = loopback();
-var port = 3000;
-var ip = '0.0.0.0';
+var port = 8080;
+var ip = '10.131.68.156';
 
 app.start = function() {
   // start the web server
