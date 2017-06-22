@@ -22,6 +22,10 @@
     "owner": {
       "type": "string",
       "required": true
+    },
+    "employees": {
+      "type": "array",
+      "required": false
     }
   },
   "validations": [],
