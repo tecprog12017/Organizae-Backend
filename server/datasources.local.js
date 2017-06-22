@@ -1,12 +1,11 @@
 module.exports = {
-  db: {
+  organizae: {
+    name: "organizae",
     connector: 'mongodb',
-    hostname: process.env.OPENSHIFT_MONGODB_DB_HOST,
-    port: process.env.OPENSHIFT_MONGODB_DB_PORT || 27017,
-    user: process.env.OPENSHIFT_MONGODB_DB_USERNAME,
-    password: process.env.OPENSHIFT_MONGODB_DB_PASSWORD,
+    host: process.env.MONGODB_SERVICE_HOST,
+    port: process.env.MONGODB_SERVICE_PORT,
+    user: process.env.MONGODB_USER,
+    password: process.env.MONGODB_ADMIN_PASSWORD,
     database: 'organizae'
   }
 };
-
-console.log(process.env.OPENSHIFT_MONGODB_DATABASE);

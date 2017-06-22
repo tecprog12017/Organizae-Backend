@@ -1,6 +1,3 @@
 {
-  "organizae": {
-    "name": "organizae",
-    "connector": "mongodb"
-  }
+  "organizae": {}
 }
