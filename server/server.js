@@ -3,7 +3,7 @@ var boot = require('loopback-boot');
 
 var app = module.exports = loopback();
 var port = 3000;
-var ip = '127.0.0.1';
+var ip = '0.0.0.0';
 
 app.start = function() {
   // start the web server
