@@ -87,6 +87,7 @@ module.exports = function(UserProfile) {
 
   //Used to assign user personal data to it's profile
   UserProfile.addAdittionalInformation = function(user, callback) {
+    console.log("user", user);
     UserProfile.findOne({where: {'email': user.email}}, function(err, instance) {
       UserProfile.insertInfos(user, instance, function(err, userProfile) {
         if (err == 200) {
@@ -104,6 +105,7 @@ module.exports = function(UserProfile) {
             callback(null, '400');
           }
         } else {
+          callback(null, '400');
           console.error('some error ocurred');
         }
       });
@@ -179,10 +181,10 @@ module.exports = function(UserProfile) {
 
   //Used for the submition of the access of the user additional informations
   UserProfile.remoteMethod('addAdittionalInformation', {
-    http: {path: '/update', verb: 'post'},
+    http: {path: '/updateUserProfile', verb: 'post'},
     accepts: {arg: 'user', type: 'UserProfile',
               required: true, http: {source: 'body'}},
-    returns: {root: true, type: 'Object'},
+    returns: {arg:'userInstanceValue', type: 'Object'},
   });
 
   //Used to delete user's account in the system
