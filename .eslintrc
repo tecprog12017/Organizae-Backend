@@ -1,3 +1,14 @@
 {
-  "extends": "loopback"
+    "extends": "loopback",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "rules": {
+        "semi": 2,
+        "max-len": [2,150]
+    }
 }

@@ -1,6 +1,16 @@
 {
-  "db": {
-    "name": "db",
-    "connector": "memory"
+  "organizae": {
+    "host": "localhost",
+    "port": 27017,
+    "database": "organizae",
+    "name": "organizae",
+    "connector": "mongodb"
+  },
+  "test": {
+    "host": "localhost",
+    "port": 27017,
+    "database": "testOrganizae",
+    "name": "testOrganizae",
+    "connector": "mongodb"
   }
 }

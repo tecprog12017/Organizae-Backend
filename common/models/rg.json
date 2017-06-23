@@ -1,0 +1,27 @@
+{
+  "name": "Rg",
+  "plural": "Rgs",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "rgNumber": {
+      "type": "string",
+      "required": true
+    },
+    "rgExpeditionState": {
+      "type": "string",
+      "required": true
+    },
+    "rgUserEmail": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

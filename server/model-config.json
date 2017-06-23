@@ -14,25 +14,49 @@
     ]
   },
   "User": {
-    "dataSource": "db"
+    "dataSource": "organizae"
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "organizae",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "organizae",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "organizae",
     "public": false
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "organizae",
     "public": false
   },
   "Message": {
     "dataSource": null
+  },
+  "Address": {
+    "dataSource": "organizae",
+    "public": true
+  },
+  "Rg": {
+    "dataSource": "organizae",
+    "public": true
+  },
+  "Cpf": {
+    "dataSource": "organizae",
+    "public": true
+  },
+  "Gender": {
+    "dataSource": "organizae",
+    "public": true
+  },
+  "UserProfile": {
+    "dataSource": "organizae",
+    "public": true
+  },
+  "enterprise": {
+    "dataSource": "organizae",
+    "public": true
   }
 }

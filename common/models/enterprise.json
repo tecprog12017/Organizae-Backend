@@ -1,0 +1,35 @@
+{
+  "name": "enterprise",
+  "plural": "enterprises",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "cnpj": {
+      "type": "string",
+      "required": true
+    },
+    "occupationArea": {
+      "type": "string",
+      "required": true
+    },
+    "owner": {
+      "type": "string",
+      "required": true
+    },
+    "employees": {
+      "type": "array",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
